@@ -93,7 +93,7 @@ const HeroCarousel = () => {
 
         {/* Slide 2 */}
         <div>
-          <div className="flex flex-col md:flex-row  lg:flex-row items-center justify-between h-screen p-8 lg:p-16 bg-customPrimary text-customwhite">
+          <div className="flex flex-col md:flex-row  lg:flex-row items-center justify-between lg:h-screen p-8 lg:p-16 bg-customPrimary text-customwhite">
             {/* Text Section */}
             <div className="lg:w-1/2 md:w-1/2 w-full text-center lg:text-left md:text-left ">
               <h1 className="text-4xl lg:text-6xl font-bold mb-4">
@@ -113,11 +113,11 @@ const HeroCarousel = () => {
               </div>
             </div>
             {/* Image Section */}
-            <div className="lg:w-1/2 w-full flex md:w-1/2 lg:justify-end justify-center my-6 lg:my-0 ">
+            <div className="lg:w-1/2 w-full md:w-1/2 flex  lg:justify-end justify-center my-6 lg:my-0 ">
               <img
-                src="/hero2.jpg"
+                src="/hero1.jpg"
                 alt="Helping Hands"
-                className="rounded-lg shadow-lg object-cover lg:w-[50%] md:w-[50%]  h-[50%]"
+                className=" rounded-lg shadow-lg object-cover lg:w-[50%] md:w-[50%]  h-[50%]"
               />
             </div>
           </div>
