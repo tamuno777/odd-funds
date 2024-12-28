@@ -1,21 +1,47 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@import "~slick-carousel/slick/slick.css";
+@import "~slick-carousel/slick/slick-theme.css";
 
 :root {
   --background: #ffffff;
-  --foreground: #171717;
+  --foreground: #ffffff;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
+    --background: #ededed;
     --foreground: #ededed;
   }
 }
 
 body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-geist-sans), sans-serif;
+  margin: 0;
+  padding: 0;
+  background: white;
+  /* overflow-x: hidden; */
+}
+/* Custom class for glassmorphism effect */
+.glass-nav {
+  /* From https://css.glass */
+background: rgba(255, 255, 255, 0.3);
+border-radius: 0  0 16px 16px;
+box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+backdrop-filter: blur(6.3px);
+-webkit-backdrop-filter: blur(6.3px);
+border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+button {
+  cursor: pointer;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+button:hover {
+  background-color: #005bb5;
 }
