@@ -34,7 +34,7 @@ const Createsection = () => {
             </a>
           </div>
         </div>
-        <div className="w-full md:w-1/2 mb-8 max-h-[70%] md:mb-0 flex justify-center lg:justify-end">
+        <div className="w-full md:w-1/2 my-8 max-h-[70%] md:mb-0 flex justify-center lg:justify-end">
           <img 
             src="/about.jpg" 
             alt="Fundraising Image" 
