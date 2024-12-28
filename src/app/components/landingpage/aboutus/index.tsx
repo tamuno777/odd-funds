@@ -23,14 +23,14 @@ const Aboutsection = () => {
           <p className="text-lg md:text-xl text-gray-700 mb-8">
             We empower users to create fundraising campaigns in just a few easy steps, donate to causes they care about, and track the progress of campaigns they support. Our mission is to create a world where anyone, anywhere, can make a meaningful difference.
           </p>
-        <div className="flex gap-4">
+        <div className="flex gap-4 flex-col lg:flex-row ">
         <a href="#explore"
-         className="bg-custombutton text-white py-3 px-6 rounded-lg text-lg hover:bg-green-600 transition duration-300">
+         className="bg-custombutton text-white py-3 px-6 rounded-lg text-lg hover:bg-blue-600 transition duration-300">
             Join the Movement
           </a>
           <Link
           href="/services"
-          className="underline text-custombutton py-3 px-6 rounded-lg text-lg hover:bg-green-600 transition duration-300">
+          className="underline text-custombutton py-3 px-6 rounded-lg text-lg hover:bg-blue-600 transition duration-300">
 
         
           Explore Our Services
