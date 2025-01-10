@@ -1,10 +1,14 @@
+"use client"
 import React from "react";
 import { GiFamilyHouse, GiWorld } from "react-icons/gi";
 import StatsSection from "./countdown";
+import { useRouter } from "next/navigation";
 
 const About = () => {
+  const router = useRouter();
+
   return (
-    <div className="w-full " style={{ minHeight: "70vh" }}>
+    <div className="w-full mb-10 " style={{ minHeight: "70vh" }}>
       <section>
         <div
           className="relative w-full h-[50vh] bg-cover bg-center"
@@ -103,8 +107,11 @@ const About = () => {
                 </div>
               </div>
               <div>
-                <button className="px-8 z-30 py-4 bg-custombutton rounded-md text-white relative font-semibold after:-z-20 after:absolute after:h-1 after:w-1 after:bg-customPrimary after:left-5 overflow-hidden after:bottom-0 after:translate-y-full after:rounded-md after:hover:scale-[300] after:hover:transition-all after:hover:duration-700 after:transition-all after:duration-700 transition-all duration-700  text-2xl">
-                  Hover Me
+                <button
+                  onClick={() => router.push("/signup")}
+                  className="px-8 z-30 py-4 bg-custombutton rounded-md text-white relative font-semibold after:-z-20 after:absolute after:h-1 after:w-1 after:bg-customPrimary after:left-5 overflow-hidden after:bottom-0 after:translate-y-full after:rounded-md after:hover:scale-[300] after:hover:transition-all after:hover:duration-700 after:transition-all after:duration-700 transition-all duration-700  text-2xl"
+                >
+                  Join us
                 </button>
               </div>
             </div>
@@ -112,7 +119,7 @@ const About = () => {
         </div>
       </section>
       <section>
-        <StatsSection/>
+        <StatsSection />
       </section>
     </div>
   );

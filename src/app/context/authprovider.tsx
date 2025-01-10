@@ -1,12 +1,12 @@
-"use client"
 import React, { createContext, useState, useEffect, Dispatch, SetStateAction } from "react";
-import { onAuthStateChanged } from "firebase/auth"; // Replace with your auth library
+import { onAuthStateChanged, User as FirebaseUser } from "firebase/auth"; // Import Firebase's User type
 import { auth } from "../../../firbase.config";
 
 // Define the user type
 type User = {
   uid: string;
-  email: string | null; // Adjust to match Firebase's structure
+  name: string | null;
+  email: string | null;
 };
 
 // Define the context type
@@ -14,7 +14,7 @@ type AuthContextType = {
   user: User | null;
   loading: boolean;
   setUser: Dispatch<SetStateAction<User | null>>;
-  setLoading: Dispatch<SetStateAction<boolean>>; // Corrected to boolean
+  setLoading: Dispatch<SetStateAction<boolean>>;
   signOut: () => Promise<void>;
 };
 
@@ -22,8 +22,8 @@ type AuthContextType = {
 export const AuthContext = createContext<AuthContextType>({
   user: null,
   loading: true,
-  setUser: () => null, // Placeholder function
-  setLoading: () => {}, // Placeholder function (no return type for Dispatch)
+  setUser: () => null,
+  setLoading: () => {},
   signOut: async () => {},
 });
 
@@ -32,13 +32,23 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      setUser(currentUser ? { uid: currentUser.uid, email: currentUser.email } : null);
+    const unsubscribe = onAuthStateChanged(auth, (currentUser: FirebaseUser | null) => {
+      if (currentUser) {
+        // Map Firebase User to custom User type
+        setUser({
+          uid: currentUser.uid,
+          email: currentUser.email,
+          name: currentUser.displayName ?? null, // Use displayName or null
+        });
+      } else {
+        setUser(null);
+      }
       setLoading(false);
     });
-
+  
     return () => unsubscribe();
   }, []);
+  
 
   const signOut = async () => {
     await auth.signOut();

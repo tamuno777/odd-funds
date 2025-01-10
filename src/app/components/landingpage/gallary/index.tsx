@@ -2,7 +2,7 @@ import React from 'react';
 
 const GallerySection = () => {
   return (
-    <div className="w-full py-16 px-1 lg:py-0 lg:px-0 bg-gray-50">
+    <div className="w-full py-16 px-1 lg:py-0 lg:px-0 bg-gray-50 mb-10">
       {/* <h2 className="text-3xl font-semibold text-center text-gray-800 mb-8">Our Gallery</h2> */}
       
       {/* Gallery Grid */}

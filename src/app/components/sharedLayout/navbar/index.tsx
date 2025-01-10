@@ -1,11 +1,13 @@
-import React, { useState } from "react";
-import { useSession, signIn, signOut } from "next-auth/react";
+import React, { useContext, useState } from "react";
+import { useSession, signOut } from "next-auth/react";
 import Link from "next/link";
 import { FaBars, FaTimes, FaUserCircle } from "react-icons/fa";
+import { AuthContext } from "@/app/context/authprovider";
 
 const Nav = () => {
   const [isOpen, setIsOpen] = useState(false);
   const { data: session } = useSession();
+  const { user } = useContext(AuthContext); // Use AuthContext to get user state
 
   const toggleMenu = () => setIsOpen(!isOpen);
 
@@ -27,23 +29,42 @@ const Nav = () => {
 
         {/* Navigation Links for Larger Screens */}
         <div className="hidden sm:flex items-center space-x-6">
-          <Link href="/" className="text-white hover:text-gray-800">
-            Home
-          </Link>
-          <Link href="/about" className="text-white hover:text-gray-800">
-            About
-          </Link>
-          <Link href="/services" className="text-white hover:text-gray-800">
-            Services
-          </Link>
-          <Link href="/contact" className="text-white hover:text-gray-800">
-            Contact
-          </Link>
-          {session ? (
+          { user ? (
+            <div className="flex items-center space-x-6">
+              <Link href="/Welcome" className="text-white hover:text-gray-800">
+                Home
+              </Link>
+              <Link
+                href="/dashboard"
+                className="text-white hover:text-gray-800"
+              >
+                Dashboard
+              </Link>
+              <Link href="/contact" className="text-white hover:text-gray-800">
+                Contact
+              </Link>
+            </div>
+          ) : (
+            <div className="flex items-center space-x-6">
+              <Link href="/" className="text-white hover:text-gray-800">
+                Home
+              </Link>
+              <Link href="/about" className="text-white hover:text-gray-800">
+                About
+              </Link>
+              <Link href="/services" className="text-white hover:text-gray-800">
+                Services
+              </Link>
+              <Link href="/contact" className="text-white hover:text-gray-800">
+                Contact
+              </Link>
+            </div>
+          )}
+          { user ? (
             <div className="flex items-center space-x-4">
               <span className="flex items-center text-white">
                 <FaUserCircle className="mr-2 text-xl text-gray-500" />
-                Hi, {session.user?.name}
+                Hi, {user.name}
               </span>
               <button
                 onClick={() => signOut()}
@@ -54,12 +75,12 @@ const Nav = () => {
             </div>
           ) : (
             <div className="flex items-center space-x-4">
-              <button
-                onClick={() => signIn("google")}
+              <Link
+                href="/signIn"
                 className="bg-customPrimary text-white px-4 py-2 rounded-lg hover:bg-red-800 transition"
               >
                 Sign In
-              </button>
+              </Link>
               <Link
                 href="/signup"
                 className="bg-customPrimary text-white px-4 py-2 rounded-lg hover:bg-red-800 transition"
@@ -81,7 +102,7 @@ const Nav = () => {
             >
               {isOpen ? <FaTimes /> : <FaBars />}
             </button>
-            <Link href="/" className="text-gray-800 hover:text-white">
+            {/* <Link href="/" className="text-gray-800 hover:text-white">
               Home
             </Link>
             <Link href="/about" className="text-gray-800 hover:text-white">
@@ -92,7 +113,51 @@ const Nav = () => {
             </Link>
             <Link href="/contact" className="text-gray-800 hover:text-white">
               Contact
-            </Link>
+            </Link> */}
+
+            {user ? (
+            <div className="flex-col items-center space-x-6">
+                <Link
+                  href="/Welcome"
+                  className="text-white hover:text-gray-800"
+                >
+                  Home
+                </Link>
+                <Link
+                  href="/dashboard"
+                  className="text-white hover:text-gray-800"
+                >
+                  Dashboard
+                </Link>
+                <Link
+                  href="/contact"
+                  className="text-white hover:text-gray-800"
+                >
+                  Contact
+                </Link>
+              </div>
+            ) : (
+              <div className="flex-col items-center space-x-6">
+                <Link href="/" className="text-white hover:text-gray-800">
+                  Home
+                </Link>
+                <Link href="/about" className="text-white hover:text-gray-800">
+                  About
+                </Link>
+                <Link
+                  href="/services"
+                  className="text-white hover:text-gray-800"
+                >
+                  Services
+                </Link>
+                <Link
+                  href="/contact"
+                  className="text-white hover:text-gray-800"
+                >
+                  Contact
+                </Link>
+              </div>
+            )}
             {session ? (
               <button
                 onClick={() => signOut()}
@@ -102,12 +167,12 @@ const Nav = () => {
               </button>
             ) : (
               <>
-                <button
-                  onClick={() => signIn("google")}
+                <Link
+                  href="/signIn"
                   className="bg-customPrimary text-white px-4 py-2 rounded-lg hover:bg-red-800 transition"
                 >
                   Sign In
-                </button>
+                </Link>
                 <Link
                   href="/signup"
                   className="bg-customPrimary text-white px-4 py-2 rounded-lg hover:bg-red-800 transition"
