@@ -2,10 +2,13 @@
 
 import React from "react";
 import Slider from "react-slick";
+import { useRouter } from "next/navigation";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
 const HeroCarousel = () => {
+  const router = useRouter();
+
   const settings = {
     dots: true,
     infinite: true,
@@ -34,18 +37,21 @@ const HeroCarousel = () => {
             {/* Text Section */}
             <div className="lg:w-1/2 md:w-1/2 w-full text-center lg:text-left md:text-left ">
               <h1 className="text-4xl lg:text-6xl font-bold mb-4">
-                Support Your{" "}
+                Support a campaign
               </h1>
               <p className="text-2xl lg:text-3xl font-bold mb-6">
-                Make{" "}
-                <span className="text-custombutton"> Favorite Causes </span>{" "}
+                <span className="text-custombutton">
+                  {" "}
+                  Create, donate, and track{" "}
+                </span>{" "}
                 <br />
-                Create, donate, and track campaigns to make a real impact!
+                campaigns to make a real impact!
               </p>
               <div className="flex justify-center lg:justify-start space-x-4">
-                <button className="bg-custombutton px-6 py-3 rounded-lg text-white font-semibold">
-                Start a Campaign                </button>
-                <button className="border  border-custombutton bg-transparent text-customtext px-6 py-3 rounded-lg font-semibold">
+                <button onClick={() => router.push("/signup")} className="bg-custombutton px-6 py-3 rounded-lg text-white font-semibold">
+                  Start a Campaign{" "}
+                </button>
+                <button  onClick={() => router.push("/about")}  className="border  border-custombutton bg-transparent text-customtext px-6 py-3 rounded-lg font-semibold">
                   About Us
                 </button>
               </div>
@@ -53,9 +59,9 @@ const HeroCarousel = () => {
             {/* Image Section */}
             <div className="lg:w-1/2 w-full md:w-1/2 flex  lg:justify-end justify-center my-6 lg:my-0 ">
               <img
-                src="/hero1.jpg"
+                src="/hero1.png"
                 alt="Helping Hands"
-                className=" rounded-lg shadow-lg object-cover lg:w-[50%] md:w-[50%]  h-[50%]"
+                className=" rounded-lg shadow-lg object-cover lg:w-[100%] md:w-[50%]  h-[50%]"
               />
             </div>
           </div>
@@ -72,10 +78,10 @@ const HeroCarousel = () => {
                 by giving of your hands
               </p>
               <div className="flex justify-center lg:justify-start space-x-4">
-                <button className="bg-custombutton px-6 py-3 rounded-lg text-white font-semibold">
+                <button  onClick={() => router.push("/about")}  className="bg-custombutton px-6 py-3 rounded-lg text-white font-semibold">
                   About us
                 </button>
-                <button className="border  border-custombutton bg-transparent text-customtext px-6 py-3 rounded-lg font-semibold">
+                <button  onClick={() => router.push("/signup")}  className="border  border-custombutton bg-transparent text-customtext px-6 py-3 rounded-lg font-semibold">
                   Support Us
                 </button>
               </div>
@@ -83,9 +89,9 @@ const HeroCarousel = () => {
             {/* Image Section */}
             <div className="lg:w-1/2 w-full md:w-1/2 flex  lg:justify-end justify-center my-6 lg:my-0 ">
               <img
-                src="/hero1.jpg"
+                src="/hero1.png"
                 alt="Helping Hands"
-                className=" rounded-lg shadow-lg object-cover lg:w-[50%] md:w-[50%]  h-[50%]"
+                className=" rounded-lg shadow-lg object-cover lg:w-[100%] md:w-[50%]  h-[50%]"
               />
             </div>
           </div>
@@ -104,10 +110,10 @@ const HeroCarousel = () => {
                 create a better world
               </p>
               <div className="flex justify-center lg:justify-start space-x-4">
-                <button className="bg-custombutton px-6 py-3 rounded-lg text-white font-semibold">
+                <button  onClick={() => router.push("/signup")}  className="bg-custombutton px-6 py-3 rounded-lg text-white font-semibold">
                   Get Involved
                 </button>
-                <button className="border  border-custombutton bg-transparent text-customtext px-6 py-3 rounded-lg font-semibold">
+                <button  onClick={() => router.push("/contact")}  className="border  border-custombutton bg-transparent text-customtext px-6 py-3 rounded-lg font-semibold">
                   Contact Us
                 </button>
               </div>
@@ -115,9 +121,9 @@ const HeroCarousel = () => {
             {/* Image Section */}
             <div className="lg:w-1/2 w-full md:w-1/2 flex  lg:justify-end justify-center my-6 lg:my-0 ">
               <img
-                src="/hero1.jpg"
+                src="/hero1.png"
                 alt="Helping Hands"
-                className=" rounded-lg shadow-lg object-cover lg:w-[50%] md:w-[50%]  h-[50%]"
+                className=" rounded-lg shadow-lg object-cover lg:w-[100%] md:w-[50%]  h-[50%]"
               />
             </div>
           </div>
