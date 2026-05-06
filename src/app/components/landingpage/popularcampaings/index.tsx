@@ -1,4 +1,7 @@
 import React, { useState } from "react";
+import TextHighlight from "../../TextHighlight";
+import AppHeading from '../../Heading';
+
 
 const campaigns = [
   {
@@ -46,19 +49,23 @@ const campaigns = [
 const PopularCampaigns = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 4;
-  
+
   // Calculate the current campaigns to display based on the current page
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentCampaigns = campaigns.slice(indexOfFirstItem, indexOfLastItem);
-  
+
   // Handle page navigation
   const paginate = (pageNumber: React.SetStateAction<number>) => setCurrentPage(pageNumber);
 
   return (
     <div className="w-full">
       <section className="bg-gray-50 py-16 px-16">
-        <h2 className="text-3xl font-semibold text-center mb-8">Popular Campaigns</h2>
+        <div className="flex justify-center">
+          <AppHeading as="h2">
+          Popular <TextHighlight variant="primary">Campaigns</TextHighlight>
+        </AppHeading>
+        </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {currentCampaigns.map((campaign, index) => (

@@ -118,7 +118,7 @@ const About = () => {
           </div>
         </div>
       </section>
-      <section>
+      <section className="my-10">
         <StatsSection />
       </section>
     </div>

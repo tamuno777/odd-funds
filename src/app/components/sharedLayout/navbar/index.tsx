@@ -1,190 +1,188 @@
-import React, { useContext, useState } from "react";
+"use client";
+
+import React, { useState, useContext } from "react";
 import { useSession, signOut } from "next-auth/react";
 import Link from "next/link";
-import { FaBars, FaTimes, FaUserCircle } from "react-icons/fa";
+import { FaUserCircle } from "react-icons/fa";
+import { HiOutlineMenu, HiOutlineX } from "react-icons/hi";
 import { AuthContext } from "@/app/context/authprovider";
 
-const Nav = () => {
-  const [isOpen, setIsOpen] = useState(false);
-  const { data: session } = useSession();
-  const { user } = useContext(AuthContext); // Use AuthContext to get user state
+const linkClass =
+  "relative text-sm font-medium text-gray-600 transition-colors duration-300 hover:text-[#1a56db] no-underline after:content-[''] after:absolute after:left-0 after:-bottom-1 after:h-[2px] after:w-0 after:bg-[#1a56db] after:transition-all after:duration-300 hover:after:w-full";
 
-  const toggleMenu = () => setIsOpen(!isOpen);
+const mobileLink =
+  "text-mdfont-medium text-gray-700 border-b border-gray-100 pb-3 transition-colors duration-300 hover:text-[#1a56db]";
+
+const Nav = () => {
+  const [drawerOpen, setDrawerOpen] = useState(false);
+  const { data: session } = useSession();
+  const { user } = useContext(AuthContext);
+
+  const closeDrawer = () => setDrawerOpen(false);
 
   return (
-    <nav className=" border-b border-gray-200 shadow-sm glass-nav">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center py-4">
-        {/* Logo */}
-        <Link href="/" className="text-2xl font-bold text-gray-800">
-          MySite
-        </Link>
+    <>
+      <nav className="sticky top-0 z-50 w-full bg-white border-b border-[#e8edf5]">
+        <div className="mx-auto px-6 lg:px-16 flex items-center justify-between h-16">
 
-        {/* Hamburger Menu for Small Screens */}
-        <button
-          className="text-gray-800 text-2xl sm:hidden focus:outline-none"
-          onClick={toggleMenu}
-        >
-          {isOpen ? <FaTimes /> : <FaBars />}
-        </button>
+          <Link
+            href="/"
+            className="flex items-center gap-2 font-bold text-lg text-[#1a56db] no-underline"
+            style={{ fontFamily: "'Bricolage Grotesque', sans-serif" }}
+          >
+            <div className="w-8 h-8 rounded-lg bg-customPrimary flex items-center justify-center">
+              <svg width="16" height="16" fill="none" viewBox="0 0 24 24">
+                <path
+                  d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9V8h2v8zm4 0h-2V8h2v8z"
+                  fill="#fff"
+                />
+              </svg>
+            </div>
+            ODDFUND
+          </Link>
 
-        {/* Navigation Links for Larger Screens */}
-        <div className="hidden sm:flex items-center space-x-6">
-          { user ? (
-            <div className="flex items-center space-x-6">
-              <Link href="/Welcome" className="text-white hover:text-gray-800">
-                Home
-              </Link>
-              <Link
-                href="/dashboard"
-                className="text-white hover:text-gray-800"
-              >
-                Dashboard
-              </Link>
-              <Link href="/contact" className="text-white hover:text-gray-800">
-                Contact
-              </Link>
-            </div>
-          ) : (
-            <div className="flex items-center space-x-6">
-              <Link href="/" className="text-white hover:text-gray-800">
-                Home
-              </Link>
-              <Link href="/about" className="text-white hover:text-gray-800">
-                About
-              </Link>
-              <Link href="/services" className="text-white hover:text-gray-800">
-                Services
-              </Link>
-              <Link href="/contact" className="text-white hover:text-gray-800">
-                Contact
-              </Link>
-            </div>
-          )}
-          { user ? (
-            <div className="flex items-center space-x-4">
-              <span className="flex items-center text-white">
-                <FaUserCircle className="mr-2 text-xl text-gray-500" />
-                Hi, {user.name}
-              </span>
-              <button
-                onClick={() => signOut()}
-                className="bg-customPrimary text-white px-4 py-2 rounded-lg hover:bg-red-600 transition"
-              >
-                Sign Out
-              </button>
-            </div>
-          ) : (
-            <div className="flex items-center space-x-4">
-              <Link
-                href="/signIn"
-                className="bg-customPrimary text-white px-4 py-2 rounded-lg hover:bg-red-800 transition"
-              >
-                Sign In
-              </Link>
-              <Link
-                href="/signup"
-                className="bg-customPrimary text-white px-4 py-2 rounded-lg hover:bg-red-800 transition"
-              >
-                Sign Up
-              </Link>
-            </div>
-          )}
-        </div>
-      </div>
-
-      {/* Sidebar for Small Screens */}
-      {isOpen && (
-        <div className="sm:hidden fixed inset-0 bg-black bg-opacity-50 z-50">
-          <div className="fixed top-0 right-0 w-64 h-full bg-white shadow-lg p-6 flex flex-col space-y-6">
-            <button
-              className="text-gray-800 text-2xl sm:hidden focus:outline-none"
-              onClick={toggleMenu}
-            >
-              {isOpen ? <FaTimes /> : <FaBars />}
-            </button>
-            {/* <Link href="/" className="text-gray-800 hover:text-white">
-              Home
-            </Link>
-            <Link href="/about" className="text-gray-800 hover:text-white">
-              About
-            </Link>
-            <Link href="/services" className="text-gray-800 hover:text-white">
-              Services
-            </Link>
-            <Link href="/contact" className="text-gray-800 hover:text-white">
-              Contact
-            </Link> */}
-
+          {/* DESKTOP LINKS */}
+          <div className="hidden md:flex items-center gap-7">
             {user ? (
-            <div className="flex-col items-center space-x-6">
-                <Link
-                  href="/Welcome"
-                  className="text-white hover:text-gray-800"
-                >
-                  Home
-                </Link>
-                <Link
-                  href="/dashboard"
-                  className="text-white hover:text-gray-800"
-                >
-                  Dashboard
-                </Link>
-                <Link
-                  href="/contact"
-                  className="text-white hover:text-gray-800"
-                >
-                  Contact
-                </Link>
-              </div>
+              <>
+                <Link href="/Welcome" className={linkClass}>Home</Link>
+                <Link href="/dashboard" className={linkClass}>Dashboard</Link>
+                <Link href="/contact" className={linkClass}>Contact</Link>
+              </>
             ) : (
-              <div className="flex-col items-center space-x-6">
-                <Link href="/" className="text-white hover:text-gray-800">
-                  Home
-                </Link>
-                <Link href="/about" className="text-white hover:text-gray-800">
-                  About
-                </Link>
-                <Link
-                  href="/services"
-                  className="text-white hover:text-gray-800"
-                >
-                  Services
-                </Link>
-                <Link
-                  href="/contact"
-                  className="text-white hover:text-gray-800"
-                >
-                  Contact
-                </Link>
-              </div>
+              <>
+                <Link href="/" className={linkClass}>Home</Link>
+                <Link href="/about" className={linkClass}>About</Link>
+                <Link href="/services" className={linkClass}>How it works</Link>
+                <Link href="/contact" className={linkClass}>Contact</Link>
+              </>
             )}
-            {session ? (
-              <button
-                onClick={() => signOut()}
-                className="bg-customPrimary text-white px-4 py-2 rounded-lg hover:bg-red-800 transition"
-              >
-                Sign Out
-              </button>
+          </div>
+
+          {/* DESKTOP ACTIONS */}
+          <div className="hidden md:flex items-center gap-3">
+            {user ? (
+              <>
+                <span className="flex items-center gap-2 text-sm text-gray-700">
+                  <FaUserCircle className="text-gray-400 text-lg" />
+                  Hi, {user.name}
+                </span>
+
+                <button
+                  onClick={() => signOut()}
+                  className="px-4 py-2 rounded-lg text-sm font-medium border border-red-200 text-red-600 transition-all hover:bg-red-50 hover:-translate-y-[1px]"
+                >
+                  Sign Out
+                </button>
+              </>
             ) : (
               <>
                 <Link
                   href="/signIn"
-                  className="bg-customPrimary text-white px-4 py-2 rounded-lg hover:bg-red-800 transition"
+                  className="px-4 py-2 rounded-lg text-sm font-medium border border-[#c7d7fc] text-[#1a56db] transition-all hover:bg-[#eff4ff] hover:-translate-y-[1px]"
                 >
                   Sign In
                 </Link>
+
                 <Link
                   href="/signup"
-                  className="bg-customPrimary text-white px-4 py-2 rounded-lg hover:bg-red-800 transition"
+                  className="px-4 py-2 rounded-lg text-sm font-medium text-white bg-customPrimary  transition-all hover:bg-customPrimaryHover hover:-translate-y-[1px] hover:shadow-md"
                 >
-                  Sign Up
+                  Start a Campaign
                 </Link>
               </>
             )}
           </div>
+
+          <button
+            onClick={() => setDrawerOpen(true)}
+            className="md:hidden p-2 rounded-lg hover:bg-gray-100 transition"
+            aria-label="Open menu"
+          >
+            <HiOutlineMenu size={22} />
+          </button>
         </div>
+      </nav>
+
+      {drawerOpen && (
+        <div
+          className="fixed inset-0 z-40 bg-black/30"
+          onClick={closeDrawer}
+        />
       )}
-    </nav>
+
+      {/* MOBILE DRAWER */}
+      <div
+        className={`fixed top-0 right-0 h-full w-[280px] z-50 bg-white border-l border-[#e8edf5] flex flex-col p-6 gap-6 transform transition-transform duration-300 ease-out ${drawerOpen ? "translate-x-0" : "translate-x-full"
+          }`}
+      >
+        <button
+          onClick={closeDrawer}
+          className="self-end p-2 rounded-lg hover:bg-gray-100 transition"
+        >
+          <HiOutlineX size={22} />
+        </button>
+
+        {/* LINKS */}
+        <div className="flex flex-col gap-4">
+          {(user
+            ? [
+              { href: "/Welcome", label: "Home" },
+              { href: "/dashboard", label: "Dashboard" },
+              { href: "/contact", label: "Contact" },
+            ]
+            : [
+              { href: "/", label: "Home" },
+              { href: "/about", label: "About" },
+              { href: "/services", label: "How it works" },
+              { href: "/contact", label: "Contact" },
+            ]
+          ).map((item) => (
+            <Link
+              key={item.href}
+              href={item.href}
+              onClick={closeDrawer}
+              className={mobileLink}
+            >
+              {item.label}
+            </Link>
+          ))}
+        </div>
+
+        {/* MOBILE ACTIONS */}
+        <div className="mt-auto flex flex-col gap-3">
+          {session || user ? (
+            <button
+              onClick={() => {
+                signOut();
+                closeDrawer();
+              }}
+              className="w-full px-4 py-2.5 rounded-lg text-sm font-medium border border-red-200 text-red-600 hover:bg-red-50 transition"
+            >
+              Sign Out
+            </button>
+          ) : (
+            <>
+              <Link
+                href="/signup"
+                onClick={closeDrawer}
+                className="w-full text-center px-4 py-2.5 rounded-lg text-sm font-medium text-white bg-[#1a56db] hover:bg-[#1447bc] transition"
+              >
+                Start a Campaign
+              </Link>
+
+              <Link
+                href="/signIn"
+                onClick={closeDrawer}
+                className="w-full text-center px-4 py-2.5 rounded-lg text-sm font-medium border border-[#c7d7fc] text-[#1a56db] hover:bg-[#eff4ff] transition"
+              >
+                Sign In
+              </Link>
+            </>
+          )}
+        </div>
+      </div>
+    </>
   );
 };
 

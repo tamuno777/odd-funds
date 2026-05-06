@@ -7,6 +7,7 @@ import PopularCampaigns from "./components/landingpage/popularcampaings";
 import Aboutsection from "./components/landingpage/aboutus";
 import Createsection from "./components/landingpage/createsection";
 import GallerySection from "./components/landingpage/gallary";
+import StatsSection from "./about/countdown";
 
 export default function Home() {
   // const { data: session } = useSession();
@@ -29,10 +30,11 @@ export default function Home() {
       <section>
         <Aboutsection />
         <HowWeWork />
+        <StatsSection />
         <PopularCampaigns />
-        <Createsection/>
-        <GallerySection/>
-       
+        <Createsection />
+        <GallerySection />
+
       </section>
     </div>
   );

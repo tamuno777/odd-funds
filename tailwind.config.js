@@ -8,17 +8,34 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        customPrimary: "#800020",
-        customgray: "#ABB2BF",
-        customblack: "#1E1E1E",
-        customwhite: "#FFFFFF",
-        customtext: "#FFFFF0",
-        custombutton: "#003366",
-        customborder: "#B87333",
+        customPrimary: "#1E40AF",
+        customPrimaryHover: "#1a56db",
+        customPrimaryLight: "#3B82F6",
+        customPrimarySoft: "#EFF6FF",
+
+        customGray: "#ABB2BF",
+        customBlack: "#1E1E1E",
+        customWhite: "#FFFFFF",
+        customText: "#F8FAFC",
+
+        customButton: "#1E40AF",
+        customButtonHover: "#1D4ED8",
+
+        customBorder: "#BFDBFE",
       },
       fontFamily: {
-        mono: ["var(--font-roboto-mono)", "monospace"],
+      bricolage: ["var(--font-bricolage)", "sans-serif"],
       },
+      keyframes: {
+      "loading-bar": {
+        "0%": { transform: "translateX(-100%)" },
+        "50%": { transform: "translateX(100%)" },
+        "100%": { transform: "translateX(300%)" },
+      },
+    },
+    animation: {
+      "loading-bar": "loading-bar 1.2s ease-in-out infinite",
+    },
     },
   },
   plugins: [],

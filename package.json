@@ -12,6 +12,7 @@
     "@next-auth/firebase-adapter": "^2.0.1",
     "aos": "^2.3.4",
     "autoprefixer": "^10.4.20",
+    "clsx": "^2.1.1",
     "firebase": "^11.1.0",
     "next": "15.1.0",
     "next-auth": "^4.24.11",
@@ -22,7 +23,8 @@
     "react-icons": "^5.4.0",
     "react-intersection-observer": "^9.14.1",
     "react-slick": "^0.30.3",
-    "slick-carousel": "^1.8.1"
+    "slick-carousel": "^1.8.1",
+    "tailwind-merge": "^3.5.0"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
