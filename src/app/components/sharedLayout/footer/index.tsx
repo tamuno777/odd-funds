@@ -75,7 +75,7 @@ const Footer = () => {
 
         {/* Bottom bar */}
         <div className="mt-14 flex flex-col items-center justify-between gap-4 border-t border-white/10 pt-6 text-center text-sm text-white/60 md:flex-row">
-          <p>© {new Date().getFullYear()} FundMe. All rights reserved.</p>
+          <p>© {new Date().getFullYear()} OddFund. All rights reserved.</p>
 
           <div className="flex gap-6">
             <span className="hover:text-white transition cursor-pointer">
