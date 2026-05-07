@@ -77,18 +77,15 @@ const HowWeWork = () => {
           <AppHeading as="h2" variant="dark">
             How <TextHighlight variant="primary">it works</TextHighlight>
           </AppHeading>
-          <p className="text-gray-500 text-mdmax-w-xl mx-auto mt-3">
-            Three simple steps to start making a difference — whether you&apos;re raising funds or giving them.
+          <p className="text-md leading-relaxed  text-gray-700 mb-8">
+            Three simple steps to start making a difference. whether you&apos;re raising funds or giving them.
           </p>
         </div>
 
-        {/* Container */}
         <div className="flex flex-col lg:flex-row rounded-2xl overflow-hidden border border-gray-100 bg-white min-h-[420px]">
 
-          {/* LEFT */}
           <div className="lg:w-64 border-b lg:border-b-0 lg:border-r border-gray-100">
 
-            {/* MOBILE TABS */}
             <div className="flex flex-wrap gap-2 p-4 lg:hidden">
               {steps.map((s, i) => (
                 <button
@@ -107,7 +104,7 @@ const HowWeWork = () => {
               ))}
             </div>
 
-            {/* DESKTOP LIST */}
+            {/* DESKTOP  */}
             <div className="hidden lg:flex flex-col">
               {steps.map((s, i) => {
                 const isActive = active === i;
@@ -142,7 +139,6 @@ const HowWeWork = () => {
                       />
                     </span>
 
-                    {/* Label */}
                     <span
                       className={`
             text-sm font-medium transition-colors
@@ -157,7 +153,6 @@ const HowWeWork = () => {
             </div>
           </div>
 
-          {/* CENTER VISUAL */}
           <div className="hidden lg:flex flex-1 items-center justify-center p-8 border-r border-gray-100">
             <div className="w-full max-w-[200px] aspect-square rounded-2xl flex flex-col items-center justify-center gap-3 bg-customPrimarySoft">
               <i className={`ti ${step.icon} text-5xl text-customPrimary`} />
@@ -167,10 +162,8 @@ const HowWeWork = () => {
             </div>
           </div>
 
-          {/* RIGHT */}
           <div className="flex-1 lg:flex-[1.1] p-7 lg:p-10 flex flex-col justify-center animate-fadeUp">
 
-            {/* Badge */}
             <span className="inline-flex items-center gap-2 text-xs font-medium rounded-full px-3 py-1 mb-5 w-fit bg-customPrimarySoft text-customPrimary border border-customBorder">
               <span className="w-1.5 h-1.5 rounded-full bg-customPrimary" />
               {step.badge}
@@ -201,7 +194,6 @@ const HowWeWork = () => {
         </div>
       </section>
 
-      {/* Icons only (no styling here anymore) */}
       <link
         href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css"
         rel="stylesheet"

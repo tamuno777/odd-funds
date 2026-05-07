@@ -46,3 +46,13 @@ button {
 button:hover {
   background-color: #1447bc;
 }
+
+/* Hide scrollbar */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}

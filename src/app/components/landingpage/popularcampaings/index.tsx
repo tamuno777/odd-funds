@@ -1,106 +1,213 @@
-import React, { useState } from "react";
+"use client";
+
+import React, { useEffect, useRef, useState } from "react";
+import Image from "next/image";
+import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
+
+import AppHeading from "../../Heading";
 import TextHighlight from "../../TextHighlight";
-import AppHeading from '../../Heading';
-
-
-const campaigns = [
-  {
-    title: "Help Children in Need",
-    description: "Raising funds for underprivileged children to provide education and healthcare.",
-    imgSrc: "/hero2.jpg",
-  },
-  {
-    title: "Support Clean Water Projects",
-    description: "Contribute to providing clean water for communities in need.",
-    imgSrc: "/hero2.jpg",
-  },
-  {
-    title: "Support Animal Rescue",
-    description: "Help animals find a safe home and proper care.",
-    imgSrc: "/hero2.jpg",
-  },
-  {
-    title: "Build a School for Remote Areas",
-    description: "Raise funds to build a school in a remote area for children’s education.",
-    imgSrc: "/hero2.jpg",
-  },
-  {
-    title: "Feed the Hungry",
-    description: "Donate to provide food for the homeless and those in need.",
-    imgSrc: "/hero2.jpg",
-  },
-  {
-    title: "Fund Medical Supplies for Hospitals",
-    description: "Help hospitals get the necessary medical supplies for patients.",
-    imgSrc: "/hero2.jpg",
-  },
-  {
-    title: "Support Mental Health Awareness",
-    description: "Raise awareness and fund mental health support services.",
-    imgSrc: "/hero2.jpg",
-  },
-  {
-    title: "Build Homes for Displaced Families",
-    description: "Help displaced families by providing them with homes and safety.",
-    imgSrc: "/hero2.jpg",
-  },
-];
+import PrimaryLink from "../../Link";
+import SectionBackground from "../../sectionBackground";
+import { campaigns } from "../../contants/campaigns";
 
 const PopularCampaigns = () => {
-  const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 4;
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const [isPaused, setIsPaused] = useState(false);
 
-  // Calculate the current campaigns to display based on the current page
-  const indexOfLastItem = currentPage * itemsPerPage;
-  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentCampaigns = campaigns.slice(indexOfFirstItem, indexOfLastItem);
+  // Auto scroll
+  useEffect(() => {
+    const container = scrollRef.current;
 
-  // Handle page navigation
-  const paginate = (pageNumber: React.SetStateAction<number>) => setCurrentPage(pageNumber);
+    if (!container || isPaused) return;
+
+    const interval = setInterval(() => {
+      container.scrollBy({
+        left: 320,
+        behavior: "smooth",
+      });
+
+      // Infinite loop effect
+      if (
+        container.scrollLeft + container.clientWidth >=
+        container.scrollWidth - 20
+      ) {
+        container.scrollTo({
+          left: 0,
+          behavior: "smooth",
+        });
+      }
+    }, 4000);
+
+    return () => clearInterval(interval);
+  }, [isPaused]);
+
+  const scroll = (direction: "left" | "right") => {
+    const container = scrollRef.current;
+
+    if (!container) return;
+
+    container.scrollBy({
+      left: direction === "left" ? -320 : 320,
+      behavior: "smooth",
+    });
+  };
 
   return (
-    <div className="w-full">
-      <section className="bg-gray-50 py-16 px-16">
-        <div className="flex justify-center">
-          <AppHeading as="h2">
-          Popular <TextHighlight variant="primary">Campaigns</TextHighlight>
-        </AppHeading>
+    <SectionBackground>
+      <section className="relative z-10 overflow-hidden px-6 py-20 lg:px-16">
+        {/* Header */}
+        <div className="mb-12 flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+          <div className="max-w-xl">
+            <AppHeading as="h2">
+              Popular{" "}
+              <TextHighlight variant="primary">
+                campaigns
+              </TextHighlight>
+            </AppHeading>
+
+            <p className="mt-3 text-md leading-relaxed text-gray-500 md:text-base">
+
+              Discover verified fundraisers creating real impact across
+              healthcare, education, emergency relief, and community support.
+            </p>
+          </div>
+
+          {/* Desktop controls */}
+          <div className="hidden items-center gap-3 md:flex">
+            <button
+              onClick={() => scroll("left")}
+              className="flex h-11 w-11 items-center justify-center rounded-full border border-gray-200 bg-white transition-all duration-200 hover:border-customPrimary hover:bg-customPrimary hover:text-white"
+            >
+              <div>
+                <FiChevronLeft size={20} />
+              </div>            </button>
+
+            <button
+              onClick={() => scroll("right")}
+              className="flex h-11 w-11 items-center justify-center rounded-full border border-gray-200 bg-white transition-all duration-200 hover:border-customPrimary hover:bg-customPrimary hover:text-white"
+            >
+              <div>
+                <FiChevronRight size={20} />
+              </div>            </button>
+          </div>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {currentCampaigns.map((campaign, index) => (
-            <div key={index} className="bg-white shadow-lg rounded-xl p-6">
-              <img
-                src={campaign.imgSrc}
-                alt={`Campaign ${index + 1}`}
-                className="w-full h-40 object-cover rounded-t-xl mb-4"
-              />
-              <h3 className="font-semibold text-lg mb-2">{campaign.title}</h3>
-              <p className="text-gray-600 mb-4">{campaign.description}</p>
-              <a href="#donate" className="text-customPrimary hover:underline">Donate Now</a>
-            </div>
-          ))}
+        {/* Slider */}
+        <div
+          ref={scrollRef}
+          onMouseEnter={() => setIsPaused(true)}
+          onMouseLeave={() => setIsPaused(false)}
+          className="
+            no-scrollbar
+            flex gap-4 md:gap-6
+            overflow-x-auto overflow-y-hidden
+            scroll-smooth
+            snap-x snap-mandatory
+            touch-pan-x
+            pb-2
+          "
+        >
+          {campaigns.map((campaign, index) => {
+            const raised =
+              parseFloat(campaign.raised.replace(/[₦MK+,]/g, "")) || 0;
+
+            const goal =
+              parseFloat(campaign.goal.replace(/[₦MK+,]/g, "")) || 1;
+
+            const progress = (raised / goal) * 100;
+
+            return (
+              <div
+                key={index}
+                className="
+                  min-w-[280px]
+                  sm:min-w-[300px]
+                  md:min-w-[340px]
+                  snap-start
+                  overflow-hidden
+                  rounded-3xl
+                  border border-white/60
+                  bg-white/90
+                  shadow-sm
+                  backdrop-blur-sm
+                  transition-all duration-300
+                  hover:-translate-y-1
+                  hover:shadow-xl
+                  flex flex-col
+                "
+              >
+                <div className="relative h-52 w-full overflow-hidden">
+                  <Image
+                    src={campaign.imgSrc}
+                    alt={campaign.title}
+                    fill
+                    className="object-cover transition-transform duration-500 hover:scale-105"
+                  />
+
+                  <div className="absolute left-4 top-4">
+                    <span className="rounded-full bg-white/90 px-3 py-1 text-xs font-medium text-customPrimary backdrop-blur-sm">
+                      {campaign.category}
+                    </span>
+                  </div>
+                </div>
+
+                <div className="flex flex-1 flex-col p-6">
+                  <h3 className="mb-2 text-lg font-semibold text-gray-900">
+                    {campaign.title}
+                  </h3>
+
+                  <p className="mb-5 text-sm leading-relaxed text-gray-500">
+                    {campaign.description}
+                  </p>
+
+                  {/* Progress */}
+                  <div className="mb-5">
+                    <div className="mb-2 flex items-center justify-between text-xs text-gray-500">
+                      <span>{campaign.raised} raised</span>
+                      <span>{campaign.goal} goal</span>
+                    </div>
+
+                    <div className="h-2 overflow-hidden rounded-full bg-gray-100">
+                      <div
+                        className="h-full rounded-full bg-customPrimary transition-all duration-500"
+                        style={{
+                          width: `${Math.min(progress, 100)}%`,
+                        }}
+                      />
+                    </div>
+                  </div>
+
+                  <div className="mt-auto">
+                    <PrimaryLink href="/campaigns" variant="primary">
+                      Donate now
+                    </PrimaryLink>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
         </div>
 
-        {/* Pagination Controls */}
-        <div className="flex justify-center mt-8">
+        {/* Mobile controls */}
+        <div className="mt-8 flex items-center justify-center gap-3 md:hidden">
           <button
-            onClick={() => paginate(currentPage - 1)}
-            disabled={currentPage === 1}
-            className="px-4 py-2 mx-2 bg-customPrimary text-white rounded-lg hover:bg-red-800 disabled:opacity-50"
+            onClick={() => scroll("left")}
+            className="flex h-10 w-10 items-center justify-center rounded-full border border-gray-200 bg-white transition-all duration-200 hover:border-customPrimary hover:bg-customPrimary hover:text-white"
           >
-            Previous
-          </button>
+            <div>
+              <FiChevronLeft size={18} />
+            </div>          </button>
+
           <button
-            onClick={() => paginate(currentPage + 1)}
-            disabled={currentPage === Math.ceil(campaigns.length / itemsPerPage)}
-            className="px-4 py-2 mx-2 bg-customPrimary text-white rounded-lg hover:bg-red-800 disabled:opacity-50"
+            onClick={() => scroll("right")}
+            className="flex h-10 w-10 items-center justify-center rounded-full border border-gray-200 bg-white transition-all duration-200 hover:border-customPrimary hover:bg-customPrimary hover:text-white"
           >
-            Next
-          </button>
+            <div>
+              <FiChevronRight size={18} />
+            </div>          </button>
         </div>
       </section>
-    </div>
+    </SectionBackground>
   );
 };
 
