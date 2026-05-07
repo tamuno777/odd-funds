@@ -39,7 +39,7 @@ export const slides = [
   },
   {
     badge: "Join our mission",
-    title: ["Building a ", "better world", ""],
+    title: ["Building a ", "better world", "today"],
     titleAccent: [false, true, false],
     sub: "Launch a campaign in minutes and join a community driving real impact together.",
     cta1: "Get Started , it's free",
