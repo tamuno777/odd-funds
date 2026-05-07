@@ -42,7 +42,7 @@ export const slides = [
     title: ["Building a ", "better world", " today"],
     titleAccent: [false, true, false],
     sub: "Launch a campaign in minutes and join a community driving real impact together.",
-    cta1: "Get Started , it's free",
+    cta1: "Get Started Now, it's free",
     cta1Route: "/signup",
     cta2: "How it works",
     cta2Route: "/about",
