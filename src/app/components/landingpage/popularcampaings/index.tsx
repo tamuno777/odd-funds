@@ -152,7 +152,7 @@ const PopularCampaigns = () => {
                 </div>
 
                 <div className="flex flex-1 flex-col p-6">
-                  <h3 className="mb-2 text-lg font-semibold text-gray-900">
+                  <h3 className="mb-2 text-lg  leading-tight font-semibold text-gray-900">
                     {campaign.title}
                   </h3>
 

@@ -40,7 +40,7 @@ const Createsection = () => {
 
           <p className="mx-auto mt-4 max-w-xl text-sm leading-relaxed text-gray-600 md:text-base lg:mx-0">
             Raise funds for medical needs, education, emergencies,
-            community projects, and more — all from one trusted platform.
+            community projects, and more all from one trusted platform.
           </p>
 
           <div className="mt-8 grid gap-4 sm:grid-cols-2">
