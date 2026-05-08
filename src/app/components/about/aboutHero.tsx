@@ -14,7 +14,7 @@ interface Props {
 
 const AboutHero = ({ badge, title, sub, image }: Props) => {
   return (
-    <section className="relative max-h-[75vh] overflow-hidden py-10">
+    <section className="relative max-h-[80vh] overflow-hidden py-10">
       <Image
         src={image}
         alt="About hero"
