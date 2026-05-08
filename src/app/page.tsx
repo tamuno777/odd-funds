@@ -10,32 +10,38 @@ import GallerySection from "./components/landingpage/gallary";
 import StatsSection from "./components/countdown/countdown";
 
 export default function Home() {
-  // const { data: session } = useSession();
-
   return (
-    <div>
-      {/* Hero Section */}
-      <section
-        style={{
-          textAlign: "center",
-          overflow: "hidden",
-          // margin: "0 0 20rem 0",
-          padding: "0 0 2rem 0",
-          // padding: "2rem",
-        }}
-        className="shadow-lg shadow-b"
-      >
+
+    <div className="w-full overflow-x-hidden">
+
+      <section className="w-full overflow-hidden shadow-sm">
         <HeroCarousel />
       </section>
-      <section>
-        <Aboutsection />
-        <HowWeWork />
-        <StatsSection />
-        <PopularCampaigns />
-        <Createsection />
-        <GallerySection />
 
+      <section className="w-full">
+        <Aboutsection />
       </section>
+
+      <section className="w-full">
+        <HowWeWork />
+      </section>
+
+      <section className="w-full">
+        <StatsSection />
+      </section>
+
+      <section className="w-full">
+        <PopularCampaigns />
+      </section>
+
+      <section className="w-full">
+        <Createsection />
+      </section>
+
+      <section className="w-full">
+        <GallerySection />
+      </section>
+
     </div>
   );
 }

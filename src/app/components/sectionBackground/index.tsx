@@ -8,7 +8,7 @@ type Props = {
 export default function SectionBackground({ children, className }: Props) {
   return (
     <div
-      className={`relative w-full overflow-hidden ${className ?? ""}`}
+      className={`relative w-full overflow-hidden mx-auto max-w-7xl ${className ?? ""}`}
       style={{
         // minHeight: "calc(100vh - 65px)",
         height:"fit-content",

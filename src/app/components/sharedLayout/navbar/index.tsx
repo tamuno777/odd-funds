@@ -22,7 +22,7 @@ const Nav = () => {
 
   return (
     <>
-      <nav className="sticky top-0 z-50 w-full bg-white border-b border-[#e8edf5]">
+      <nav className="sticky top-0 z-50 w-full bg-white border-b border-[#e8edf5] mx-auto max-w-7xl">
         <div className="mx-auto px-6 lg:px-16 flex items-center justify-between h-16">
 
           <Link

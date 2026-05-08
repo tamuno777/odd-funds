@@ -7,7 +7,7 @@ import TextHighlight from "../../TextHighlight";
 
 const Aboutsection = () => {
   return (
-    <div className="w-full">
+    <div className="w-full mx-auto max-w-7xl">
       <section className="flex flex-col items-center justify-between gap-12 bg-white px-6 py-16 md:px-10 lg:flex-row lg:px-16">
         
         <div className="hidden lg:flex lg:w-1/2 justify-center">

@@ -27,6 +27,9 @@ export default {
       fontFamily: {
       bricolage: ["var(--font-bricolage)", "sans-serif"],
       },
+      maxWidth: {
+      app: "1280px",
+    },
       keyframes: {
       "loading-bar": {
         "0%": { transform: "translateX(-100%)" },

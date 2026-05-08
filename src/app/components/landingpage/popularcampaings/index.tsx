@@ -54,7 +54,7 @@ const PopularCampaigns = () => {
 
   return (
     <SectionBackground>
-      <section className="relative z-10 overflow-hidden px-6 py-20 lg:px-16">
+      <section className="relative z-10  mx-auto max-w-7xl overflow-hidden px-6 py-20 lg:px-16">
         {/* Header */}
         <div className="mb-12 flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
           <div className="max-w-xl">

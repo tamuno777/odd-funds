@@ -8,7 +8,7 @@ import TrustSection from "../components/howItWorks/TrustSection";
 
 export default function HowItWorks() {
   return (
-    <main className="overflow-hidden bg-white">
+    <main className="overflow-hidden bg-white mx-auto max-w-7xl">
       <AboutHero
         badge="How OddFund Works"
         title="Simple fundraising built for real people"

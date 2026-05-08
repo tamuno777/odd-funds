@@ -23,7 +23,9 @@ body {
   background: white;
   /* overflow-x: hidden; */
 }
-
+* {
+  box-sizing: border-box;
+}
 /* Custom class for glassmorphism effect */
 .glass-nav {
   /* From https://css.glass */

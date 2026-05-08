@@ -58,7 +58,7 @@ export default function SignIn() {
   };
 
   return (
-    <main className="min-h-screen bg-[#f8fbff]">
+    <main className="min-h-screen bg-[#f8fbff] mx-auto max-w-7xl">
       <div className="grid min-h-screen lg:grid-cols-2">
         <div className="relative hidden overflow-hidden lg:block">
           <Image

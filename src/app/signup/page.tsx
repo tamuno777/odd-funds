@@ -79,7 +79,7 @@ export default function SignUp() {
   };
 
   return (
-    <main className="min-h-screen bg-[#f8fbff]">
+    <main className="min-h-screen bg-[#f8fbff] mx-auto max-w-7xl">
       <div className="grid min-h-screen lg:grid-cols-2">
         {/* LEFT */}
         <div className="relative hidden overflow-hidden lg:block">

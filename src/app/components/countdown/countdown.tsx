@@ -144,7 +144,7 @@ const StatsSection = () => {
   };
 
   return (
-    <section className="relative w-full py-20 overflow-hidden">
+    <section className="relative w-full py-20 overflow-hidden mx-auto max-w-7xl">
       {/* Background */}
       <div className="absolute inset-0">
         <img

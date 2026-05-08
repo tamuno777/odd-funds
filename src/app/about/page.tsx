@@ -8,7 +8,7 @@ import WhyChooseUs from "../components/about/WhyChooseUs";
 
 export default function AboutPage() {
   return (
-    <main className="overflow-hidden bg-white">
+    <main className="overflow-hidden bg-white mx-auto max-w-7xl">
       <AboutHero
         badge="About OddFund"
         title="Helping people raise hope through community support"

@@ -33,9 +33,8 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-      className={`${bricolage.variable} ${geistSans.variable} ${geistMono.variable}`}
+      className={`${bricolage.variable} ${geistSans.variable} ${geistMono.variable} `}
       >
-        {/* Wrap the components with both SessionProvider and AuthProvider */}
         <SessionProvider>
           <AuthProvider>
             {" "}

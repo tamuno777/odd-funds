@@ -59,7 +59,7 @@ const HeroCarousel = () => {
 
       <div
         style={slideStyle}
-        className="flex flex-col items-center text-center px-6 pt-10 pb-14 md:px-12 md:pt-14 lg:hidden"
+        className="flex flex-col items-center text-center  px-6 pt-10 pb-14 md:px-12 md:pt-14 lg:hidden"
       >
         <MobileTextBlock slide={slide} />
       </div>
