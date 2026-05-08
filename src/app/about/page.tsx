@@ -11,7 +11,7 @@ export default function AboutPage() {
     <main className="overflow-hidden bg-white mx-auto max-w-7xl">
       <AboutHero
         badge="About OddFund"
-        title="Helping people raise hope through community support"
+        title="Helping people raise hope through support"
         sub="We make fundraising simple, transparent, and accessible for everyone."
         image="/aboutBanner.png"
       />
