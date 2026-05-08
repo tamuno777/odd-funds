@@ -1,169 +1,251 @@
 "use client";
+
 import { useState } from "react";
-import { createUserWithEmailAndPassword } from "firebase/auth";
+
+import Link from "next/link";
+import Image from "next/image";
+
 import { useRouter } from "next/navigation";
-import { auth } from "../../../firbase.config";
+
+import {
+  FiArrowRight,
+  FiCalendar,
+  FiLock,
+  FiMail,
+  FiUser,
+} from "react-icons/fi";
+
+import {
+  createUserWithEmailAndPassword,
+} from "firebase/auth";
+
+import { auth, db } from "../../../firbase.config";
+
 import { doc, setDoc } from "firebase/firestore";
-import { db } from "../../../firbase.config"; 
 
 export default function SignUp() {
-  const [email, setEmail] = useState("");
-  const [Dob, setDob] = useState("");
-  const [name, setName] = useState("");
-  const [password, setPassword] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [erroMessage, setErroMessage] = useState("");
   const router = useRouter();
 
-  // const handleSignUp = async () => {
-  //   setLoading(true);
-  //   try {
-  //     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-  //     const user = userCredential.user;
+  const [name, setName] = useState("");
+  const [dob, setDob] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
-  //     // Sign the user in with NextAuth credentials
-  //     const res = await signIn("credentials", {
-  //       email: email,
-  //       password: password,
-  //       redirect: false, // Avoid automatic redirection
-  //     });
+  const [loading, setLoading] = useState(false);
 
-  //     if (res?.ok) {
-  //       router.push("/signin");
-  //     } else {
-  //       console.error("NextAuth signIn error:", res?.error);
-  //       alert("Error logging in: " + res?.error);
-  //     }
-  //   } catch (error) {
-  //     console.error("Firebase SignUp Error:", error);
-  //     alert("Error creating account: " + error.message);
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
+  const [errorMessage, setErrorMessage] =
+    useState("");
 
   const handleSignUp = async () => {
-    setLoading(true);
-    try {
-      const userCredential = await createUserWithEmailAndPassword(
-        auth,
-        email,
-        password
+    if (!name || !dob || !email || !password) {
+      setErrorMessage(
+        "Please complete all required fields."
       );
+
+      return;
+    }
+
+    setLoading(true);
+    setErrorMessage("");
+
+    try {
+      const userCredential =
+        await createUserWithEmailAndPassword(
+          auth,
+          email,
+          password
+        );
+
       const user = userCredential.user;
-      console.log(user);
-      // Add user details to Firestore
+
       await setDoc(doc(db, "users", user.uid), {
         uid: user.uid,
         name,
         email,
-        dob: Dob,
+        dob,
         createdAt: new Date().toISOString(),
       });
 
-      console.log("User data saved successfully");
-
-      // Redirect directly to another page
-      router.push("/signIn"); // Change this to your desired path
+      router.push("/signin");
     } catch (error) {
-      console.error("Firebase SignUp Error:", error);
-      alert("Error creating account: " + error);
-      setErroMessage( "An unknown error occurred."); // Set error message
+      console.error(error);
+
+      setErrorMessage(
+        "Unable to create account. Please try again."
+      );
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div>
-      <div className="flex h-screen bg-customPrimary px-10">
-        {/* Image section (visible on large devices only) */}
-        <div
-          className="hidden lg:block lg:w-1/2  bg-cover bg-center"
-          style={{ backgroundImage: "url('/signup.jpeg')" }}
-        ></div>
+    <main className="min-h-screen bg-[#f8fbff]">
+      <div className="grid min-h-screen lg:grid-cols-2">
+        {/* LEFT */}
+        <div className="relative hidden overflow-hidden lg:block">
+          <Image
+            src="/signup.jpeg"
+            alt="Fundraising"
+            fill
+            priority
+            className="object-cover"
+          />
 
-        {/* Form section */}
-        <div className="w-full lg:w-1/2 max-w-md m bg-customPrimary p-8 shadow-md flex flex-col items-center justify-center">
-          <div className="w-full">
-            <h1 className="text-2xl font-bold mb-6 text-white">
-              Join Us Today !!!
+          <div className="absolute inset-0 bg-black/45" />
+
+          <div className="absolute inset-0 flex flex-col justify-end p-14 text-white">
+            <span className="mb-5 inline-flex w-fit rounded-full bg-white/10 px-4 py-2 text-sm backdrop-blur-md">
+              Join our community
+            </span>
+
+            <h1 className="max-w-lg text-5xl font-bold leading-tight">
+              Start changing lives today
             </h1>
-            <div>
-              <label className="font-semibold text-sm text-white pb-1 block">
-                Full name
-              </label>
-              <input
-                type="text"
-                placeholder="First name    Last name"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                className="border rounded-lg px-3 py-2 mt-1 mb-5 text-sm w-full bg-gray-800 text-white focus:border-blue-500 focus:ring-2 focus:ring-blue-500"
-              />
-            </div>
-            <div>
-              <label className="font-semibold text-sm text-white pb-1 block">
-                Email
-              </label>
-              <input
-                type="email"
-                placeholder="Email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="border rounded-lg px-3 py-2 mt-1 mb-5 text-sm w-full bg-gray-800 text-white focus:border-blue-500 focus:ring-2 focus:ring-blue-500"
-              />
-            </div>
 
-            <div>
-              <label className="font-semibold text-sm text-white pb-1 block">
-                Password
-              </label>
-              <input
-                type="password"
-                placeholder="Password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="border rounded-lg px-3 py-2 mt-1 mb-5 text-sm w-full bg-gray-800 text-white focus:border-blue-500 focus:ring-2 focus:ring-blue-500"
-              />
-            </div>
-
-            <div>
-              <label className="font-semibold text-sm text-white pb-1 block">
-                Date of Birth
-              </label>
-              <input
-                className="border rounded-lg px-3 py-2 mt-1 mb-5 text-sm w-full bg-gray-800 text-white focus:border-blue-500 focus:ring-2 focus:ring-blue-500"
-                type="date"
-                value={Dob}
-                onChange={(e) => setDob(e.target.value)}
-                id="dob"
-              />
-            </div>
+            <p className="mt-5 max-w-md text-sm leading-relaxed text-white/80">
+              Launch campaigns, support causes, and become
+              part of a growing community creating real
+              impact.
+            </p>
           </div>
+        </div>
 
-            {/* Error Message */}
-            {erroMessage && (
-            <div className="bg-red-500 text-white px-4 py-2 rounded mb-4 w-full text-center">
-              {erroMessage}
+        <div className="flex items-center justify-center px-6 py-12 lg:px-16">
+          <div className="w-full max-w-md">
+            <div className="mb-10">
+              <span className="mb-4 inline-flex rounded-full bg-customPrimary/10 px-4 py-2 text-sm font-medium text-customPrimary">
+                Create account
+              </span>
+
+              <h2 className="text-3xl font-bold text-gray-900">
+                Join OddFund
+              </h2>
+
+              <p className="mt-3 text-sm leading-relaxed text-gray-500">
+                Create your account and start fundraising
+                or supporting meaningful causes.
+              </p>
             </div>
-          )}
-          <button
-            onClick={handleSignUp}
-            className={`w-full px-4 py-2 text-white rounded ${
-              loading ? "bg-custombutton-200" : "bg-custombutton"
-            }`}
-            disabled={loading}
-          >
-            {loading ? "Creating Account..." : "Sign Up"}
-          </button>
-          <p className="mt-4 text-center text-white">
-            Already have an account?{" "}
-            <a href="/signIn" className="text-custombutton underline text-bold">
-              Sign In
-            </a>
-          </p>
+
+            {errorMessage && (
+              <div className="mb-6 rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-500">
+                {errorMessage}
+              </div>
+            )}
+
+            <div className="space-y-5">
+              <div>
+                <label className="mb-2 block text-sm font-medium text-gray-700">
+                  Full name
+                </label>
+
+                <div className="flex h-14 items-center gap-3 rounded-2xl border border-gray-200 bg-white px-4 transition focus-within:border-customPrimary">
+                  <FiUser className="text-gray-400" />
+
+                  <input
+                    type="text"
+                    placeholder="John Doe"
+                    value={name}
+                    disabled={loading}
+                    onChange={(e) =>
+                      setName(e.target.value)
+                    }
+                    className="h-full w-full bg-transparent text-sm outline-none"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="mb-2 block text-sm font-medium text-gray-700">
+                  Email address
+                </label>
+
+                <div className="flex h-14 items-center gap-3 rounded-2xl border border-gray-200 bg-white px-4 transition focus-within:border-customPrimary">
+                  <FiMail className="text-gray-400" />
+
+                  <input
+                    type="email"
+                    placeholder="Enter your email"
+                    value={email}
+                    disabled={loading}
+                    onChange={(e) =>
+                      setEmail(e.target.value)
+                    }
+                    className="h-full w-full bg-transparent text-sm outline-none"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="mb-2 block text-sm font-medium text-gray-700">
+                  Password
+                </label>
+
+                <div className="flex h-14 items-center gap-3 rounded-2xl border border-gray-200 bg-white px-4 transition focus-within:border-customPrimary">
+                  <FiLock className="text-gray-400" />
+
+                  <input
+                    type="password"
+                    placeholder="Create a password"
+                    value={password}
+                    disabled={loading}
+                    onChange={(e) =>
+                      setPassword(e.target.value)
+                    }
+                    className="h-full w-full bg-transparent text-sm outline-none"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="mb-2 block text-sm font-medium text-gray-700">
+                  Date of birth
+                </label>
+
+                <div className="flex h-14 items-center gap-3 rounded-2xl border border-gray-200 bg-white px-4 transition focus-within:border-customPrimary">
+                  <FiCalendar className="text-gray-400" />
+
+                  <input
+                    type="date"
+                    value={dob}
+                    disabled={loading}
+                    onChange={(e) =>
+                      setDob(e.target.value)
+                    }
+                    className="h-full w-full bg-transparent text-sm outline-none"
+                  />
+                </div>
+              </div>
+
+
+              <button
+                onClick={handleSignUp}
+                disabled={loading}
+                className="flex h-14 w-full items-center justify-center gap-2 rounded-2xl bg-customPrimary text-sm font-semibold text-white transition hover:scale-[1.01] disabled:cursor-not-allowed disabled:opacity-70"
+              >
+                {loading ? (
+                  "Creating account..."
+                ) : (
+                  <>
+                    Create account
+                    <FiArrowRight size={18} />
+                  </>
+                )}
+              </button>
+            </div>
+
+            <p className="mt-8 text-center text-sm text-gray-500">
+              Already have an account?{" "}
+              <Link
+                href="signIn"
+                className="font-semibold text-customPrimary"
+              >
+                Sign in
+              </Link>
+            </p>
+          </div>
         </div>
       </div>
-    </div>
+    </main>
   );
 }

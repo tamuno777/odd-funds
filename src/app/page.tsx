@@ -7,7 +7,7 @@ import PopularCampaigns from "./components/landingpage/popularcampaings";
 import Aboutsection from "./components/landingpage/aboutus";
 import Createsection from "./components/landingpage/createsection";
 import GallerySection from "./components/landingpage/gallary";
-import StatsSection from "./about/countdown";
+import StatsSection from "./components/countdown/countdown";
 
 export default function Home() {
   // const { data: session } = useSession();

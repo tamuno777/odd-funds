@@ -53,7 +53,7 @@ const Nav = () => {
               <>
                 <Link href="/" className={linkClass}>Home</Link>
                 <Link href="/about" className={linkClass}>About</Link>
-                <Link href="/services" className={linkClass}>How it works</Link>
+                <Link href="/HowItWorks" className={linkClass}>How it works</Link>
                 <Link href="/contact" className={linkClass}>Contact</Link>
               </>
             )}

@@ -28,10 +28,11 @@ const Footer = () => {
               Explore
             </h3>
             <ul className="mt-4 space-y-3 text-sm text-white/70">
-              <li className="hover:text-white transition">Campaigns</li>
-              <li className="hover:text-white transition">How it works</li>
-              <li className="hover:text-white transition">Start a campaign</li>
-              <li className="hover:text-white transition">Donate</li>
+              <li className="hover:text-white transition"><Link href="/HowItWorks">Campaigns</Link></li>
+              <li className="hover:text-white transition"><Link href="/HowItWorks">How it works</Link></li>
+              <li className="hover:text-white transition"><Link href="/HowItWorks">Start a campaign</Link></li>
+              <li className="hover:text-white transition"><Link href="/HowItWorks">Donate</Link></li>
+              
             </ul>
           </div>
 
