@@ -134,7 +134,7 @@ const Nav = () => {
             : [
               { href: "/", label: "Home" },
               { href: "/about", label: "About" },
-              { href: "/services", label: "How it works" },
+              { href: "/HowItWorks", label: "How it works" },
               { href: "/contact", label: "Contact" },
             ]
           ).map((item) => (
