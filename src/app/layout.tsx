@@ -33,18 +33,22 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-      className={`${bricolage.variable} ${geistSans.variable} ${geistMono.variable} `}
+        className={`${bricolage.variable} ${geistSans.variable} ${geistMono.variable} `}
       >
         <SessionProvider>
           <AuthProvider>
             {" "}
-            <div className="bg-customPrimary w-full">
-            <Nav />
+            <div className="bg-white w-full">
+              <Nav />
 
             </div>
             {children}
           </AuthProvider>
-          <Footer/>
+          <div className="bg-customPrimary w-full">
+
+            <Footer />
+          </div>
+
         </SessionProvider>
       </body>
     </html>

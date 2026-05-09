@@ -7,7 +7,6 @@ import Image from "next/image";
 import { MobileTextBlock, TextBlock } from "./TextBlock";
 import { slides } from "../contants/carouse";
 
-
 const HeroCarousel = () => {
   const [current, setCurrent] = useState(0);
   const [visible, setVisible] = useState(true);
@@ -42,102 +41,86 @@ const HeroCarousel = () => {
         : "translateX(24px)",
   };
 
+
+  const desktopHeight = "clamp(500px, 72vh, 760px)";
+
   return (
     <SectionBackground>
-      {/* Decorative blob */}
-      <div
-        className="absolute pointer-events-none rounded-full"
-        style={{
-          width: 300,
-          height: 300,
-          background: "radial-gradient(circle, #e0f0ff 0%, transparent 70%)",
-          bottom: -80,
-          left: "30%",
-          opacity: 0.5,
-        }}
-      />
-
       <div
         style={slideStyle}
-        className="flex flex-col items-center text-center  px-6 pt-10 pb-14 md:px-12 md:pt-14 lg:hidden"
+        className="flex flex-col items-center text-center px-6 pt-10 pb-14 md:px-12 md:pt-14 lg:hidden"
       >
         <MobileTextBlock slide={slide} />
       </div>
-      <div
-        style={slideStyle}
-        className="hidden lg:flex flex-row items-center justify-between gap-8 px-20"
-        css-min-h="calc(100vh - 65px)"
-      >
-        <style>{`.lg-hero-row { min-height: calc(100vh - 65px); }`}</style>
-      </div>
 
       <div
-        style={{ ...slideStyle, minHeight: "calc(100vh - 65px)" }}
-        className="hidden lg:flex flex-row items-center justify-between gap-8 px-20"
+        className="hidden lg:block"
+        style={{ height: desktopHeight }}
       >
-        <div className="flex-1 max-w-xl text-left">
-          <TextBlock slide={slide} />
-        </div>
-
-        <div className="flex-1 max-w-lg w-full relative flex items-center justify-center ml-8">
-
-          <div className="relative w-full aspect-[4/3] rounded-2xl overflow-hidden border border-[#e8edf5]">
-            <Image
-              src={slide.image}
-              alt="Campaign visual"
-              fill
-              priority
-              className="object-cover"
-            />
+        <div
+          style={{ ...slideStyle, height: "100%" }}
+          className="mx-auto flex h-full max-w-7xl flex-row items-center justify-between gap-8 px-16 xl:px-20"
+        >
+          <div className="flex-1 max-w-xl text-left">
+            <TextBlock slide={slide} />
           </div>
 
-          {/* Float left */}
-          <div
-            className="absolute flex items-center gap-2 rounded-xl border px-3 py-2"
-            style={{
-              bottom: -14,
-              left: -20,
-              background: "#fff",
-              borderColor: "#e8edf5",
-              boxShadow: "0 4px 20px rgba(26,86,219,0.08)",
-            }}
-          >
-            <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: "#eff4ff" }}>
-              <LeftIcon className="text-customPrimary" size={14} />
+          <div className="flex-1 max-w-lg w-full relative flex items-center justify-center ml-8">
+            <div className="relative w-full aspect-[4/3] rounded-2xl overflow-hidden border border-[#e8edf5]">
+              <Image
+                src={slide.image}
+                alt="Campaign visual"
+                fill
+                priority
+                className="object-cover"
+              />
             </div>
-            <div className="flex flex-col">
-              <span className="text-xs" style={{ color: "#9ca3af" }}>{slide.floatLeft.label}</span>
-              <span className="text-sm font-bold" style={{ fontFamily: "'Bricolage Grotesque', sans-serif", color: "#111827" }}>
-                {slide.floatLeft.val}
-              </span>
-            </div>
-          </div>
 
-          {/* Float right */}
-          <div
-            className="absolute flex items-center gap-2 rounded-xl border px-3 py-2"
-            style={{
-              top: -14,
-              right: -16,
-              background: "#fff",
-              borderColor: "#e8edf5",
-              boxShadow: "0 4px 20px rgba(26,86,219,0.08)",
-            }}
-          >
-            <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: "#eff4ff" }}>
-              <RightIcon className="text-customPrimary" size={14} />
+            <div
+              className="absolute flex items-center gap-2 rounded-xl border px-3 py-2"
+              style={{
+                bottom: -14,
+                left: -20,
+                background: "#fff",
+                borderColor: "#e8edf5",
+                boxShadow: "0 4px 20px rgba(26,86,219,0.08)",
+              }}
+            >
+              <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: "#eff4ff" }}>
+                <LeftIcon className="text-customPrimary" size={14} />
+              </div>
+              <div className="flex flex-col">
+                <span className="text-xs" style={{ color: "#9ca3af" }}>{slide.floatLeft.label}</span>
+                <span className="text-sm font-bold" style={{ fontFamily: "'Bricolage Grotesque', sans-serif", color: "#111827" }}>
+                  {slide.floatLeft.val}
+                </span>
+              </div>
             </div>
-            <div className="flex flex-col">
-              <span className="text-xs" style={{ color: "#9ca3af" }}>{slide.floatRight.label}</span>
-              <span className="text-sm font-bold" style={{ fontFamily: "'Bricolage Grotesque', sans-serif", color: "#111827" }}>
-                {slide.floatRight.val}
-              </span>
+
+            <div
+              className="absolute flex items-center gap-2 rounded-xl border px-3 py-2"
+              style={{
+                top: -14,
+                right: -16,
+                background: "#fff",
+                borderColor: "#e8edf5",
+                boxShadow: "0 4px 20px rgba(26,86,219,0.08)",
+              }}
+            >
+              <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: "#eff4ff" }}>
+                <RightIcon className="text-customPrimary" size={14} />
+              </div>
+              <div className="flex flex-col">
+                <span className="text-xs" style={{ color: "#9ca3af" }}>{slide.floatRight.label}</span>
+                <span className="text-sm font-bold" style={{ fontFamily: "'Bricolage Grotesque', sans-serif", color: "#111827" }}>
+                  {slide.floatRight.val}
+                </span>
+              </div>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Nav  */}
       <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-4 z-10">
         <button
           onClick={() => goTo(current - 1, "left")}
@@ -172,7 +155,5 @@ const HeroCarousel = () => {
     </SectionBackground>
   );
 };
-
-
 
 export default HeroCarousel;
