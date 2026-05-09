@@ -9,7 +9,7 @@ type Props = {
 export default function SectionBackground({ children, className, innerClassName }: Props) {
   return (
     <div
-      className={`relative w-full mx-auto max-w-7xl overflow-hidden ${className ?? ""}`}
+      className={`relative w-full  overflow-hidden ${className ?? ""}`}
       style={{
         background: "linear-gradient(135deg, #f0f5ff 0%, #e8f0fe 60%, #fff 100%)",
       }}
