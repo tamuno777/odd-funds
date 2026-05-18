@@ -46,24 +46,17 @@ const stats = [
 
 const TOTAL_PAGES = Math.ceil(stats.length / 2);
 const AUTO_INTERVAL = 3500;
-const RESUME_DELAY = 5000; // resume auto-play 5s after last user interaction
+const RESUME_DELAY = 5000;
 
 const StatsSection = () => {
   const [startCount, setStartCount] = useState(false);
   const [current, setCurrent] = useState(0);
   const sliderRef = useRef<HTMLDivElement | null>(null);
-
-  // We store the auto-play timer and resume timer in refs so we can
-  // clear/restart them without causing re-renders
   const autoTimerRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const resumeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-
-  // Touch/swipe tracking
   const touchStartX = useRef<number | null>(null);
 
   const [ref, inView] = useInView({ triggerOnce: false, threshold: 0.3 });
-
-  // Count-up animation trigger
   useEffect(() => {
     if (inView) {
       setStartCount(false);
@@ -71,7 +64,6 @@ const StatsSection = () => {
     }
   }, [inView]);
 
-  // Sync scroll position whenever `current` changes
   useEffect(() => {
     if (!sliderRef.current) return;
     sliderRef.current.scrollTo({
@@ -79,8 +71,6 @@ const StatsSection = () => {
       behavior: "smooth",
     });
   }, [current]);
-
-  // --- Auto-play helpers ---
 
   const stopAutoPlay = useCallback(() => {
     if (autoTimerRef.current) {
@@ -96,7 +86,6 @@ const StatsSection = () => {
     }, AUTO_INTERVAL);
   }, [stopAutoPlay]);
 
-  // Start auto-play on mount; clean up on unmount
   useEffect(() => {
     startAutoPlay();
     return () => {
@@ -105,18 +94,12 @@ const StatsSection = () => {
     };
   }, [startAutoPlay, stopAutoPlay]);
 
-  // --- User interaction handler ---
-  // Stops auto-play immediately, applies the user's choice,
-  // then restarts auto-play after RESUME_DELAY.
+
   const goToPage = useCallback(
     (index: number) => {
-      // 1. Kill the running interval so it can't overwrite us
       stopAutoPlay();
 
-      // 2. Apply user's choice
       setCurrent(index);
-
-      // 3. Clear any pending resume and schedule a fresh one
       if (resumeTimerRef.current) clearTimeout(resumeTimerRef.current);
       resumeTimerRef.current = setTimeout(() => {
         startAutoPlay();
@@ -125,7 +108,6 @@ const StatsSection = () => {
     [stopAutoPlay, startAutoPlay]
   );
 
-  // --- Swipe handlers ---
   const handleTouchStart = (e: React.TouchEvent) => {
     touchStartX.current = e.touches[0].clientX;
   };
@@ -144,95 +126,107 @@ const StatsSection = () => {
   };
 
   return (
-    <section className="relative w-full py-20 overflow-hidden mx-auto max-w-7xl">
-      {/* Background */}
+    <section className="relative w-full overflow-hidden py-24">
       <div className="absolute inset-0">
         <img
           src="/aboutBanner.png"
-          className="w-full h-full object-cover"
-          alt="bg"
+          alt="background"
+          className="h-full w-full object-cover scale-105"
         />
-        <div className="absolute inset-0 bg-black/50" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/60 to-black/80" />
       </div>
 
-      <div ref={ref} className="relative z-10 max-w-7xl mx-auto px-6 lg:px-16">
-        {/* Heading */}
-        <div className="text-center text-white mb-12">
-          <AppHeading as="h2" variant="default">
-            Trusted by{" "}
-            <TextHighlight variant="primary">thousands</TextHighlight>, powered
-            by <TextHighlight variant="primary">generosity</TextHighlight>
-          </AppHeading>
-          <p className="text-gray-200 text-sm md:text-mdmax-w-xl mx-auto">
-            Real impact from real people supporting real causes.
-          </p>
-        </div>
+      <div ref={ref} className="relative z-10">
+        <div className="mx-auto max-w-7xl px-6 lg:px-16">
+          <div className="text-center text-white mb-14">
+            <AppHeading as="h2" className="text-white">
+              Trusted by{" "}
+              <TextHighlight variant="primary">thousands</TextHighlight>,
+              powered by{" "}
+              <TextHighlight variant="primary">generosity</TextHighlight>
+            </AppHeading>
 
-        {/* ===== MOBILE CAROUSEL ===== */}
-        <div className="md:hidden">
-          <div
-            ref={sliderRef}
-            className="flex overflow-hidden scroll-smooth"
-            onTouchStart={handleTouchStart}
-            onTouchEnd={handleTouchEnd}
-          >
-            {Array.from({ length: TOTAL_PAGES }).map((_, pageIndex) => (
+            <p className="mt-3 text-sm md:text-base text-white/70 max-w-xl mx-auto">
+              Real impact from real people supporting real causes.
+            </p>
+          </div>
+
+          <div className="md:hidden">
+            <div
+              ref={sliderRef}
+              className="flex overflow-hidden scroll-smooth"
+              onTouchStart={handleTouchStart}
+              onTouchEnd={handleTouchEnd}
+            >
+              {Array.from({ length: TOTAL_PAGES }).map((_, pageIndex) => (
+                <div
+                  key={pageIndex}
+                  className="min-w-full grid grid-cols-2 gap-4"
+                >
+                  {stats
+                    .slice(pageIndex * 2, pageIndex * 2 + 2)
+                    .map((stat, i) => (
+                      <div
+                        key={i}
+                        className="rounded-2xl bg-white/10 backdrop-blur-xl border border-white/10 p-5 text-center text-white"
+                      >
+                        <div className="text-customPrimary flex justify-center">
+                          {stat.icon}
+                        </div>
+
+                        <h2 className="text-2xl font-bold mt-2">
+                          {startCount && (
+                            <CountUp
+                              start={0}
+                              end={stat.value}
+                              duration={2}
+                            />
+                          )}
+                          {stat.suffix}
+                        </h2>
+
+                        <p className="text-sm font-medium mt-1">
+                          {stat.label}
+                        </p>
+                        <p className="text-xs text-white/60">{stat.sub}</p>
+                      </div>
+                    ))}
+                </div>
+              ))}
+            </div>
+
+            <div className="flex justify-center gap-2 mt-6">
+              {Array.from({ length: TOTAL_PAGES }).map((_, i) => (
+                <button
+                  key={i}
+                  onClick={() => goToPage(i)}
+                  className={`h-2 rounded-full transition-all ${current === i ? "w-6 bg-customPrimary" : "w-2 bg-white/40"
+                    }`}
+                />
+              ))}
+            </div>
+          </div>
+
+          <div className="hidden md:grid grid-cols-2 lg:grid-cols-4 gap-12 text-center">
+            {stats.map((stat, i) => (
               <div
-                key={pageIndex}
-                className="min-w-full grid grid-cols-2 gap-4 px-2"
+                key={i}
+                className="text-white flex flex-col items-center gap-3"
               >
-                {stats
-                  .slice(pageIndex * 2, pageIndex * 2 + 2)
-                  .map((stat, i) => (
-                    <div
-                      key={i}
-                      className="bg-white/10 backdrop-blur-md rounded-xl p-4 text-center text-white flex flex-col items-center gap-2"
-                    >
-                      <div className="text-customPrimary">{stat.icon}</div>
-                      <h2 className="text-xl font-bold">
-                        {startCount && (
-                          <CountUp start={0} end={stat.value} duration={2} />
-                        )}
-                        {stat.suffix}
-                      </h2>
-                      <p className="text-sm font-medium">{stat.label}</p>
-                      <p className="text-xs text-gray-300">{stat.sub}</p>
-                    </div>
-                  ))}
+                <div className="text-customPrimary">{stat.icon}</div>
+
+                <h2 className="text-4xl font-bold">
+                  {startCount && (
+                    <CountUp start={0} end={stat.value} duration={2.5} />
+                  )}
+                  {stat.suffix}
+                </h2>
+
+                <p className="text-base font-semibold">{stat.label}</p>
+                <p className="text-sm text-white/60">{stat.sub}</p>
               </div>
             ))}
           </div>
-
-          {/* Dots */}
-          <div className="flex justify-center gap-2 mt-5">
-            {Array.from({ length: TOTAL_PAGES }).map((_, i) => (
-              <button
-                key={i}
-                onClick={() => goToPage(i)}
-                aria-label={`Go to slide ${i + 1}`}
-                className={`h-2 rounded-full transition-all duration-300 ${
-                  current === i ? "w-6 bg-customPrimary" : "w-2 bg-white/40"
-                }`}
-              />
-            ))}
-          </div>
-        </div>
-
-        {/* ===== DESKTOP GRID ===== */}
-        <div className="hidden md:grid grid-cols-2 lg:grid-cols-4 gap-10 text-center">
-          {stats.map((stat, i) => (
-            <div key={i} className="text-white flex flex-col items-center gap-3">
-              <div className="text-customPrimary">{stat.icon}</div>
-              <h2 className="text-3xl font-bold">
-                {startCount && (
-                  <CountUp start={0} end={stat.value} duration={2.5} />
-                )}
-                {stat.suffix}
-              </h2>
-              <p className="text-mdfont-semibold">{stat.label}</p>
-              <p className="text-sm text-gray-300">{stat.sub}</p>
-            </div>
-          ))}
         </div>
       </div>
     </section>

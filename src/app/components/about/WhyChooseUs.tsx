@@ -9,7 +9,7 @@ const features = [
 
 const WhyChooseUs = () => {
   return (
-    <section className="bg-gray-50 py-20 px-6 lg:px-16">
+    <section className="bg-gray-50 py-20 px-6 lg:px-16 w-full">
       <div className="mx-auto max-w-7xl">
         <div className="max-w-2xl text-center mx-auto">
           <span className="text-sm font-semibold uppercase tracking-widest text-customPrimary">

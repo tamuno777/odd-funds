@@ -9,7 +9,7 @@ import SupportCTASection from "../components/contactUs/SupportCTASection";
 
 export default function ContactPage() {
   return (
-    <main className="overflow-hidden mx-auto max-w-7xl">
+    <main className="overflow-hidden ">
       <AboutHero
         badge="We’re here to help"
         title="Contact & Support"
