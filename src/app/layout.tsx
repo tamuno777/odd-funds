@@ -3,7 +3,6 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { SessionProvider } from "next-auth/react"; // Import SessionProvider
-import { AuthProvider } from "./context/authprovider";
 import Nav from "./components/sharedLayout/navbar";
 import Footer from "./components/sharedLayout/footer";
 import { Bricolage_Grotesque } from "next/font/google";
@@ -36,14 +35,12 @@ export default function RootLayout({
         className={`${bricolage.variable} ${geistSans.variable} ${geistMono.variable} `}
       >
         <SessionProvider>
-          <AuthProvider>
             {" "}
             <div className="bg-white w-full">
               <Nav />
 
             </div>
             {children}
-          </AuthProvider>
           <div className="bg-customPrimary w-full">
 
             <Footer />
