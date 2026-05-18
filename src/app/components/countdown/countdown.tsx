@@ -23,7 +23,7 @@ const stats = [
   },
   {
     icon: <FaHandsHelping size={38} />,
-    value: 470,
+    value: 471,
     label: "Campaigns",
     sub: "Active fundraisers",
     suffix: "+",
