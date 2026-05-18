@@ -1,27 +1,14 @@
 "use client";
 
 import { useState } from "react";
-
 import Link from "next/link";
 import Image from "next/image";
-
 import { useRouter } from "next/navigation";
+import { FiArrowRight, FiCalendar, FiLock, FiMail, FiUser } from "react-icons/fi";
+import { signIn } from "next-auth/react";
+import { getErrorMessageSignUp } from "../helper/getErrorMessage";
+import { validate } from "../helper/authValidation";
 
-import {
-  FiArrowRight,
-  FiCalendar,
-  FiLock,
-  FiMail,
-  FiUser,
-} from "react-icons/fi";
-
-import {
-  createUserWithEmailAndPassword,
-} from "firebase/auth";
-
-import { auth, db } from "../../../firbase.config";
-
-import { doc, setDoc } from "firebase/firestore";
 
 export default function SignUp() {
   const router = useRouter();
@@ -32,16 +19,18 @@ export default function SignUp() {
   const [password, setPassword] = useState("");
 
   const [loading, setLoading] = useState(false);
-
-  const [errorMessage, setErrorMessage] =
-    useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
   const handleSignUp = async () => {
-    if (!name || !dob || !email || !password) {
-      setErrorMessage(
-        "Please complete all required fields."
-      );
+    const validationError = validate(
+      name,
+      dob,
+      email,
+      password
+    );
 
+    if (validationError) {
+      setErrorMessage(validationError);
       return;
     }
 
@@ -49,39 +38,64 @@ export default function SignUp() {
     setErrorMessage("");
 
     try {
-      const userCredential =
-        await createUserWithEmailAndPassword(
-          auth,
-          email,
-          password
-        );
+      const response = await fetch("/api/register", {
+        method: "POST",
 
-      const user = userCredential.user;
+        headers: {
+          "Content-Type": "application/json",
+        },
 
-      await setDoc(doc(db, "users", user.uid), {
-        uid: user.uid,
-        name,
-        email,
-        dob,
-        createdAt: new Date().toISOString(),
+        body: JSON.stringify({
+          name: name.trim(),
+          dob,
+          email: email.trim().toLowerCase(),
+          password,
+        }),
       });
 
-      router.push("/signin");
+      const data = await response.json();
+
+      if (!response.ok) {
+        setErrorMessage(
+          getErrorMessageSignUp(data.error)
+        );
+
+        return;
+      }
+
+      // AUTO SIGN IN
+      const result = await signIn("credentials", {
+        email: email.trim().toLowerCase(),
+        password,
+        redirect: false,
+      });
+
+      if (result?.error) {
+        router.push("/signIn");
+        return;
+      }
+
+      router.push("/Welcome");
+
+      router.refresh();
     } catch (error) {
-      console.error(error);
+      console.error("[SIGNUP_ERROR]", error);
 
       setErrorMessage(
-        "Unable to create account. Please try again."
+        "Something went wrong. Please try again."
       );
     } finally {
       setLoading(false);
     }
   };
 
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === "Enter" && !loading) handleSignUp();
+  };
+
   return (
     <main className="min-h-screen bg-[#f8fbff] mx-auto max-w-7xl">
       <div className="grid min-h-screen lg:grid-cols-2">
-        {/* LEFT */}
         <div className="relative hidden overflow-hidden lg:block">
           <Image
             src="/signup.jpeg"
@@ -103,9 +117,8 @@ export default function SignUp() {
             </h1>
 
             <p className="mt-5 max-w-md text-sm leading-relaxed text-white/80">
-              Launch campaigns, support causes, and become
-              part of a growing community creating real
-              impact.
+              Launch campaigns, support causes, and become part of a growing
+              community creating real impact.
             </p>
           </div>
         </div>
@@ -122,8 +135,8 @@ export default function SignUp() {
               </h2>
 
               <p className="mt-3 text-sm leading-relaxed text-gray-500">
-                Create your account and start fundraising
-                or supporting meaningful causes.
+                Create your account and start fundraising or supporting
+                meaningful causes.
               </p>
             </div>
 
@@ -147,9 +160,8 @@ export default function SignUp() {
                     placeholder="John Doe"
                     value={name}
                     disabled={loading}
-                    onChange={(e) =>
-                      setName(e.target.value)
-                    }
+                    onChange={(e) => setName(e.target.value)}
+                    onKeyDown={handleKeyDown}
                     className="h-full w-full bg-transparent text-sm outline-none"
                   />
                 </div>
@@ -168,9 +180,8 @@ export default function SignUp() {
                     placeholder="Enter your email"
                     value={email}
                     disabled={loading}
-                    onChange={(e) =>
-                      setEmail(e.target.value)
-                    }
+                    onChange={(e) => setEmail(e.target.value)}
+                    onKeyDown={handleKeyDown}
                     className="h-full w-full bg-transparent text-sm outline-none"
                   />
                 </div>
@@ -189,9 +200,8 @@ export default function SignUp() {
                     placeholder="Create a password"
                     value={password}
                     disabled={loading}
-                    onChange={(e) =>
-                      setPassword(e.target.value)
-                    }
+                    onChange={(e) => setPassword(e.target.value)}
+                    onKeyDown={handleKeyDown}
                     className="h-full w-full bg-transparent text-sm outline-none"
                   />
                 </div>
@@ -209,14 +219,12 @@ export default function SignUp() {
                     type="date"
                     value={dob}
                     disabled={loading}
-                    onChange={(e) =>
-                      setDob(e.target.value)
-                    }
+                    onChange={(e) => setDob(e.target.value)}
+                    onKeyDown={handleKeyDown}
                     className="h-full w-full bg-transparent text-sm outline-none"
                   />
                 </div>
               </div>
-
 
               <button
                 onClick={handleSignUp}
@@ -233,11 +241,16 @@ export default function SignUp() {
                 )}
               </button>
             </div>
-
+            <button
+              onClick={() => signIn("google", { callbackUrl: "/Welcome" })}
+              className="w-full py-3 border border-gray-200 rounded-xl text-sm font-medium hover:bg-gray-50 transition flex items-center justify-center gap-2"
+            >
+              Continue with Google
+            </button>
             <p className="mt-8 text-center text-sm text-gray-500">
               Already have an account?{" "}
               <Link
-                href="signIn"
+                href="/signIn"
                 className="font-semibold text-customPrimary"
               >
                 Sign in

@@ -1,24 +1,20 @@
 "use client";
 
-import { useContext, useState } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { FiArrowRight, FiLock, FiMail } from "react-icons/fi";
-
-import { signIn } from "../api/auth/authUtils";
-import { AuthContext } from "../context/authprovider";
+import { signIn } from "next-auth/react";
+import { getErrorMessage } from "../helper/getErrorMessage";
 
 export default function SignIn() {
   const router = useRouter();
 
-  const { loading, setLoading, setUser } =
-    useContext(AuthContext);
-
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleSignIn = async () => {
     if (!email || !password) {
@@ -26,35 +22,49 @@ export default function SignIn() {
       return;
     }
 
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      setError("Please enter a valid email address.");
+      return;
+    }
+
+    if (password.length < 6) {
+      setError("Password must be at least 6 characters.");
+      return;
+    }
+
     setLoading(true);
     setError("");
 
     try {
-      const { session, user } = await signIn(
-        email,
-        password
-      );
-
-      if (!session) {
-        throw new Error("Session failed");
-      }
-
-      setUser({
-        uid: user.uid,
-        email: user.email ?? null,
-        name: user.displayName ?? null,
+      const result = await signIn("credentials", {
+        email: email.trim().toLowerCase(),
+        password,
+        redirect: false,
       });
 
-      router.push("/welcome");
-    } catch (err) {
-      console.error(err);
+      if (result?.error) {
+        if (result.error === "CredentialsSignin") {
+          setError("Invalid email or password.");
+        } else {
+          setError(getErrorMessage(result.error) || "Authentication failed.");
+        }
+        return;
+      }
 
-      setError(
-        "Invalid email or password. Please try again."
-      );
+      if (result?.ok) {
+        router.push("/Welcome");
+        router.refresh();
+      }
+    } catch (err) {
+      console.error("[SignIn] Unexpected error:", err);
+      setError("Unable to connect. Please check your internet and try again.");
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === "Enter" && !loading) handleSignIn();
   };
 
   return (
@@ -81,8 +91,8 @@ export default function SignIn() {
             </h1>
 
             <p className="mt-5 max-w-md text-sm leading-relaxed text-white/80">
-              Sign in to manage campaigns, track donations,
-              and stay connected with your supporters.
+              Sign in to manage campaigns, track donations, and stay connected
+              with your supporters.
             </p>
           </div>
         </div>
@@ -99,8 +109,8 @@ export default function SignIn() {
               </h2>
 
               <p className="mt-3 text-sm leading-relaxed text-gray-500">
-                Sign in to continue supporting causes and
-                managing your campaigns.
+                Sign in to continue supporting causes and managing your
+                campaigns.
               </p>
             </div>
 
@@ -124,9 +134,8 @@ export default function SignIn() {
                     placeholder="Enter your email"
                     value={email}
                     disabled={loading}
-                    onChange={(e) =>
-                      setEmail(e.target.value)
-                    }
+                    onChange={(e) => setEmail(e.target.value)}
+                    onKeyDown={handleKeyDown}
                     className="h-full w-full bg-transparent text-sm outline-none"
                   />
                 </div>
@@ -145,9 +154,8 @@ export default function SignIn() {
                     placeholder="Enter your password"
                     value={password}
                     disabled={loading}
-                    onChange={(e) =>
-                      setPassword(e.target.value)
-                    }
+                    onChange={(e) => setPassword(e.target.value)}
+                    onKeyDown={handleKeyDown}
                     className="h-full w-full bg-transparent text-sm outline-none"
                   />
                 </div>
@@ -168,9 +176,14 @@ export default function SignIn() {
                 )}
               </button>
             </div>
-
+            <button
+              onClick={() => signIn("google", { callbackUrl: "/Welcome" })}
+              className="w-full py-3 border border-gray-200 rounded-xl text-sm font-medium hover:bg-gray-50 transition flex items-center justify-center gap-2"
+            >
+              Continue with Google
+            </button>
             <p className="mt-8 text-center text-sm text-gray-500">
-              Don’t have an account?{" "}
+              Don&apos;t have an account?{" "}
               <Link
                 href="/signup"
                 className="font-semibold text-customPrimary"

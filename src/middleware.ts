@@ -1,39 +1,32 @@
 import { NextRequest, NextResponse } from "next/server";
-import { auth } from "../firbase.config";
 
+const protectedRoutes = ["/link", "/dashboard", "/Welcome", "/profile"];
+const publicRoutes    = ["/signIn", "/signup", "/"];
 
-
-// Middleware configuration
 export const config = {
-  matcher: [
-    // '/dashboard/:path*',  // Matches /dashboard and any subpath
-    '/signIn',  // Matches only /signin
-    '/signup',  // Matches only /signup
-    '/link',  // Matches only /signup
-  ],
+  matcher: ["/((?!_next/static|_next/image|favicon.ico|api/auth).*)"],
 };
 
-export default async function middleware(req: NextRequest) {
-  const path = req.nextUrl.pathname;
-  
-  const isProtectedRoute = path.startsWith("/link");
-  const isPublicRoute = ["/signIn", "/signup", "/"].includes(path);
+export default function middleware(req: NextRequest) {
+  const { nextUrl } = req;
+  const path        = nextUrl.pathname;
 
-  // Get the user from Firebase Auth (you can use cookies to check the user's auth state)
-  const user = auth.currentUser;  // Check if the user is logged in
-    // const {user } = useContext(AuthContext);
-  
+  const sessionCookie =
+    req.cookies.get("authjs.session-token") ??
+    req.cookies.get("__Secure-authjs.session-token"); 
 
-  // Redirect unauthenticated users on protected routes
-  if (isProtectedRoute && !user) {
-    console.log("Unauthenticated. Redirecting to /signIn");
-    return NextResponse.redirect(new URL("/signIn", req.url));
+  const isLoggedIn  = !!sessionCookie;
+  const isProtected = protectedRoutes.some((r) => path.startsWith(r));
+  const isPublic    = publicRoutes.includes(path);
+
+  if (isProtected && !isLoggedIn) {
+    const url = new URL("/signIn", nextUrl);
+    url.searchParams.set("callbackUrl", path);
+    return NextResponse.redirect(url);
   }
 
-  // Redirect authenticated users accessing public routes
-  if (isPublicRoute && user && path !== "/link") {
-    console.log("Authenticated user accessing public route. Redirecting to /dashboard");
-    return NextResponse.redirect(new URL("/link", req.url));
+  if (isPublic && isLoggedIn && path !== "/") {
+    return NextResponse.redirect(new URL("/welcome", nextUrl));
   }
 
   return NextResponse.next();
