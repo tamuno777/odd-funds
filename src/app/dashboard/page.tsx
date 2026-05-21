@@ -79,7 +79,7 @@ export default function Dashboard() {
 
             <button
               onClick={() =>
-                router.push("/dashboard/campaigns")
+                router.push("/dashboard/campaign")
               }
               className="mt-6 flex items-center gap-2 rounded-2xl bg-customPrimary px-5 py-3 text-sm font-semibold text-white transition hover:scale-[1.02]"
             >

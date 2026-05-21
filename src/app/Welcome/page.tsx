@@ -5,6 +5,7 @@ import { useEffect } from "react";
 import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
+import Loading from "../loading";
 
 import {
   FiArrowRight,
@@ -21,21 +22,12 @@ export default function WelcomePage() {
 
   useEffect(() => {
     if (status === "unauthenticated") {
-      router.push("/signIn");
-    }
+router.replace("/signIn");    }
   }, [status, router]);
 
   if (status === "loading") {
     return (
-      <main className="flex min-h-screen items-center justify-center bg-[#f8fbff]">
-        <div className="flex flex-col items-center gap-3">
-          <div className="h-10 w-10 animate-spin rounded-full border-4 border-customPrimary border-t-transparent" />
-
-          <p className="text-sm text-gray-500">
-            Loading your experience...
-          </p>
-        </div>
-      </main>
+     <Loading />
     );
   }
 
