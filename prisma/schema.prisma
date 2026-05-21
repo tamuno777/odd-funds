@@ -20,6 +20,9 @@ model User {
 
   accounts      Account[]
   sessions      Session[]
+
+  campaigns     Campaign[]
+
 }
 
 model Account {
@@ -59,4 +62,24 @@ model VerificationToken {
   expires    DateTime
 
   @@unique([identifier, token])
+}
+
+model Campaign {
+  id          String   @id @default(cuid())
+  title       String
+  description String
+
+  goal        Int
+  raised      Int      @default(0)
+
+  image       String?
+
+  status      String   @default("active")
+  isPublic    Boolean  @default(true)
+
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }
