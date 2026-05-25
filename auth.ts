@@ -2,11 +2,14 @@
 import NextAuth from "next-auth";
 import Google from "next-auth/providers/google";
 import Credentials from "next-auth/providers/credentials";
+import { PrismaAdapter } from "@auth/prisma-adapter"; 
 import { compare } from "bcryptjs";
 import { db } from "@/lib/db";
 import { signInSchema } from "@/lib/schema";
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
+  adapter: PrismaAdapter(db),
+
   session: {
     strategy: "jwt",
   },
@@ -15,6 +18,8 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     Google({
       clientId: process.env.AUTH_GOOGLE_ID!,
       clientSecret: process.env.AUTH_GOOGLE_SECRET!,
+      // 2. ALLOW AUTOMATIC LINKING IF EMAIL MATCHES EXISTING CREDENTIALS ACCOUNTS
+      allowDangerousEmailAccountLinking: true,
     }),
 
     Credentials({
@@ -46,18 +51,28 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   ],
 
   callbacks: {
-    async jwt({ token, user }) {
-      if (user) {
+    async jwt({ token, user, account }) {
+      // If user logs in via OAuth, find the real DB record using the adapter sync
+      if (account && account.provider !== "credentials" && token.email) {
+        const dbUser = await db.user.findUnique({
+          where: { email: token.email },
+        });
+        if (dbUser) {
+          token.id = dbUser.id;
+          token.role = dbUser.role;
+        }
+      } else if (user) {
         token.id = user.id;
-        token.role = (user as any).role ?? "user";
+        token.role = (user as { role?: string }).role ?? "user";
       }
+
       return token;
     },
 
     async session({ session, token }) {
-      if (session.user) {
+      if (session.user && token.id) {
         session.user.id = token.id as string;
-        (session.user as any).role = token.role;
+        session.user.role = (token.role as string) ?? "user";
       }
       return session;
     },

@@ -12,20 +12,26 @@ export const authConfig: NextAuthConfig = {
     }),
   ],
   callbacks: {
-    async jwt({ token, user }) {
-      if (user) {
-        token.id = user.id;
-        token.role = user.role;
-      }
-      return token;
-    },
-    async session({ session, token }) {
-      if (session.user) {
-        session.user.id = token.id as string;
-        session.user.role = (token.role as string) ?? "user";
-      }
-      return session;
-    },
+  async jwt({ token, user, account }) {
+    if (user) {
+      token.id   = user.id;  
+      token.role = (user as { role?: string }).role ?? "user";
+    }
+
+    if (account?.provider === "credentials") {
+      token.credentials = true;
+    }
+
+    return token;
   },
+
+  async session({ session, token }) {
+    if (session.user && token.id) {
+      session.user.id   = token.id as string;
+      session.user.role = (token.role as string) ?? "user";
+    }
+    return session;
+  },
+},
   session: { strategy: "jwt" },
 };

@@ -4,7 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { FiArrowRight, FiCalendar, FiLock, FiMail, FiUser } from "react-icons/fi";
+import { FiArrowRight, FiCalendar, FiLock, FiMail, FiUser, FiEye, FiEyeOff } from "react-icons/fi";
 import { signIn } from "next-auth/react";
 import { getErrorMessageSignUp } from "../helper/getErrorMessage";
 import { validate } from "../helper/authValidation";
@@ -17,10 +17,10 @@ export default function SignUp() {
   const [dob, setDob] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
+  const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-
+  const [confirmPassword, setConfirmPassword] = useState("");
   const handleSignUp = async () => {
     const validationError = validate(
       name,
@@ -33,7 +33,10 @@ export default function SignUp() {
       setErrorMessage(validationError);
       return;
     }
-
+    if (password !== confirmPassword) {
+      setErrorMessage("Passwords do not match.");
+      return;
+    }
     setLoading(true);
     setErrorMessage("");
 
@@ -187,25 +190,6 @@ export default function SignUp() {
                 </div>
               </div>
 
-              <div>
-                <label className="mb-2 block text-sm font-medium text-gray-700">
-                  Password
-                </label>
-
-                <div className="flex h-14 items-center gap-3 rounded-2xl border border-gray-200 bg-white px-4 transition focus-within:border-customPrimary">
-                  <FiLock className="text-gray-400" />
-
-                  <input
-                    type="password"
-                    placeholder="Create a password"
-                    value={password}
-                    disabled={loading}
-                    onChange={(e) => setPassword(e.target.value)}
-                    onKeyDown={handleKeyDown}
-                    className="h-full w-full bg-transparent text-sm outline-none"
-                  />
-                </div>
-              </div>
 
               <div>
                 <label className="mb-2 block text-sm font-medium text-gray-700">
@@ -226,6 +210,81 @@ export default function SignUp() {
                 </div>
               </div>
 
+              <div>
+                <label className="mb-2 block text-sm font-medium text-gray-700">
+                  Password
+                </label>
+
+                <div className="flex h-14 items-center gap-3 rounded-2xl border border-gray-200 bg-white px-4 transition focus-within:border-customPrimary">
+                  <FiLock className="text-gray-400" />
+
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    placeholder="Create a password"
+                    value={password}
+                    disabled={loading}
+                    onChange={(e) => setPassword(e.target.value)}
+                    onKeyDown={handleKeyDown}
+                    className="h-full w-full bg-transparent text-sm outline-none"
+                  />
+
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword((prev) => !prev)}
+                    className="text-gray-400 hover:text-gray-600 transition"
+                    tabIndex={-1}
+                  >
+                    {showPassword ? (
+                      <FiEyeOff size={18} />
+                    ) : (
+                      <FiEye size={18} />
+                    )}
+                  </button>
+                </div>
+              </div>
+              <div>
+                <label className="mb-2 block text-sm font-medium text-gray-700">
+                  Confirm Password
+                </label>
+
+                <div className="flex h-14 items-center gap-3 rounded-2xl border border-gray-200 bg-white px-4 transition focus-within:border-customPrimary">
+                  <FiLock className="text-gray-400" />
+
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    placeholder="Confirm your password"
+                    value={confirmPassword}
+                    disabled={loading}
+                    onChange={(e) =>
+                      setConfirmPassword(e.target.value)
+                    }
+                    onKeyDown={handleKeyDown}
+                    className="h-full w-full bg-transparent text-sm outline-none"
+                  />
+
+                  <button
+                    type="button"
+                    onClick={() =>
+                      setShowPassword((prev) => !prev)
+                    }
+                    className="text-gray-400 transition hover:text-gray-600"
+                    tabIndex={-1}
+                  >
+                    {showPassword ? (
+                      <FiEyeOff size={18} />
+                    ) : (
+                      <FiEye size={18} />
+                    )}
+                  </button>
+                </div>
+
+                {confirmPassword &&
+                  password !== confirmPassword && (
+                    <p className="mt-2 text-xs text-red-500">
+                      Passwords do not match
+                    </p>
+                  )}
+              </div>
               <button
                 onClick={handleSignUp}
                 disabled={loading}

@@ -109,14 +109,12 @@ export default function CampaignsPage() {
           </button>
         </div>
 
-        {/* ERROR MESSAGE NOTIFICATION */}
         {errorMsg && (
           <div className="mb-8 rounded-2xl bg-red-50 p-4 border border-red-200 text-sm font-medium text-red-600">
             ⚠️ {errorMsg}
           </div>
         )}
 
-        {/* METRICS PANELS */}
         <div className="mb-10 grid gap-5 md:grid-cols-3">
           <div className="rounded-3xl border border-white/60 bg-white/80 p-6 shadow-xl backdrop-blur-xl">
             <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-blue-100">
@@ -149,15 +147,12 @@ export default function CampaignsPage() {
           </div>
         </div>
 
-        {/* CORE INTERFACE FEED */}
         {isLoading ? (
-          /* LOADING WHEEL / GLOW BLOCKS STATE */
           <div className="flex flex-col items-center justify-center py-20 bg-white/40 rounded-[2rem] border border-white/60 backdrop-blur-sm">
             <FiLoader className="text-customPrimary animate-spin mb-4" size={32} />
             <p className="text-sm font-semibold text-gray-500">Syncing database entries...</p>
           </div>
         ) : campaigns.length === 0 ? (
-          /* EMPTY FALLBACK CONTAINER */
           <div className="rounded-[2rem] border border-dashed border-gray-300 bg-white/70 p-14 text-center backdrop-blur-xl">
             <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-3xl bg-customPrimary/10 text-customPrimary">
               <FiFolder size={34} />
@@ -181,10 +176,9 @@ export default function CampaignsPage() {
             </button>
           </div>
         ) : (
-          /* RENDER GRID CARDS FROM DATABASE */
           <div className="grid gap-6 lg:grid-cols-2">
             {campaigns.map((campaign, index) => {
-              const currentGoal = campaign.goal || 1; // Safeguard division-by-zero bounds
+              const currentGoal = campaign.goal || 1; 
               const currentRaised = campaign.raised || 0;
               const progress = Math.min((currentRaised / currentGoal) * 100, 100);
 

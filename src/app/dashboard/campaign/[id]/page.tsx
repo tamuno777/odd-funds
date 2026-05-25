@@ -86,7 +86,6 @@ export default function CampaignDetailsPage() {
       <div className="absolute right-0 top-20 h-72 w-72 rounded-full bg-blue-200/20 blur-3xl" />
 
       <div className="relative z-10 mx-auto max-w-7xl px-6 py-10 lg:px-16">
-        {/* TOP */}
         <div className="mb-10 flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
           <div>
             <button
@@ -110,7 +109,6 @@ export default function CampaignDetailsPage() {
             </p>
           </div>
 
-          {/* ACTIONS */}
           <div className="flex flex-wrap gap-3">
             <button className="flex h-12 items-center gap-2 rounded-2xl border px-5 text-sm">
               <FiShare2 />
@@ -129,9 +127,7 @@ export default function CampaignDetailsPage() {
           </div>
         </div>
 
-        {/* HERO */}
         <div className="grid gap-8 lg:grid-cols-[1.2fr_420px]">
-          {/* IMAGE */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
@@ -150,7 +146,6 @@ export default function CampaignDetailsPage() {
             </div>
           </motion.div>
 
-          {/* STATS */}
           <motion.div
             initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
@@ -160,7 +155,6 @@ export default function CampaignDetailsPage() {
               Campaign Analytics
             </h2>
 
-            {/* PROGRESS */}
             <div className="mt-8">
               <div className="flex justify-between text-sm">
                 <span>Progress</span>

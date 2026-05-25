@@ -4,7 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { FiArrowRight, FiLock, FiMail } from "react-icons/fi";
+import { FiArrowRight, FiLock, FiMail, FiEye, FiEyeOff } from "react-icons/fi";
 import { signIn } from "next-auth/react";
 import { getErrorMessage } from "../helper/getErrorMessage";
 
@@ -14,6 +14,7 @@ export default function SignIn() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
 
   const handleSignIn = async () => {
@@ -141,6 +142,7 @@ export default function SignIn() {
                 </div>
               </div>
 
+
               <div>
                 <label className="mb-2 block text-sm font-medium text-gray-700">
                   Password
@@ -150,7 +152,7 @@ export default function SignIn() {
                   <FiLock className="text-gray-400" />
 
                   <input
-                    type="password"
+                    type={showPassword ? "text" : "password"}
                     placeholder="Enter your password"
                     value={password}
                     disabled={loading}
@@ -158,9 +160,22 @@ export default function SignIn() {
                     onKeyDown={handleKeyDown}
                     className="h-full w-full bg-transparent text-sm outline-none"
                   />
+
+
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword((prev) => !prev)}
+                    className="text-gray-400 hover:text-gray-600 transition"
+                    tabIndex={-1}
+                  >
+                    {showPassword ? (
+                      <FiEyeOff size={18} />
+                    ) : (
+                      <FiEye size={18} />
+                    )}
+                  </button>
                 </div>
               </div>
-
               <button
                 onClick={handleSignIn}
                 disabled={loading}

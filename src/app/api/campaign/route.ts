@@ -11,6 +11,7 @@ export async function POST(req: Request) {
         { status: 401 }
       );
     }
+  console.log("SESSION DEBUG:", JSON.stringify(session, null, 2));
 
     const body = await req.json();
 

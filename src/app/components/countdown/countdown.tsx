@@ -174,7 +174,7 @@ const StatsSection = () => {
                           {stat.icon}
                         </div>
 
-                        <h2 className="text-2xl font-bold mt-2">
+                        <h2 className="text-2xl text-white font-bold mt-2">
                           {startCount && (
                             <CountUp
                               start={0}
@@ -215,7 +215,7 @@ const StatsSection = () => {
               >
                 <div className="text-customPrimary">{stat.icon}</div>
 
-                <h2 className="text-4xl font-bold">
+                <h2 className="text-4xl text-white font-bold ">
                   {startCount && (
                     <CountUp start={0} end={stat.value} duration={2.5} />
                   )}
