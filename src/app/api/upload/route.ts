@@ -1,10 +1,16 @@
 import { NextResponse } from "next/server";
-import { writeFile } from "fs/promises";
-import path from "path";
+import { v2 as cloudinary } from "cloudinary";
+
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
 
 export async function POST(req: Request) {
   try {
     const formData = await req.formData();
+
     const file = formData.get("file") as File;
 
     if (!file) {
@@ -17,16 +23,27 @@ export async function POST(req: Request) {
     const bytes = await file.arrayBuffer();
     const buffer = Buffer.from(bytes);
 
-    const fileName = `${Date.now()}-${file.name}`;
-    const filePath = path.join(process.cwd(), "public/uploads", fileName);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const result = await new Promise<any>((resolve, reject) => {
+      cloudinary.uploader
+        .upload_stream(
+          {
+            folder: "oddfunds",
+          },
+          (error, result) => {
+            if (error) reject(error);
+            else resolve(result);
+          }
+        )
+        .end(buffer);
+    });
 
-    await writeFile(filePath, buffer);
+    return NextResponse.json({
+      url: result.secure_url,
+    });
+  } catch (error) {
+    console.error("UPLOAD ERROR:", error);
 
-    const url = `/uploads/${fileName}`;
-
-    return NextResponse.json({ url });
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  } catch (err) {
     return NextResponse.json(
       { error: "Upload failed" },
       { status: 500 }

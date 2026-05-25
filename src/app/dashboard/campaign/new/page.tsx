@@ -54,13 +54,10 @@ const [image, setImage] = useState<File | null>(null);
     setLoading(true);
 
     let imageUrl = "";
-
-    // STEP 1: upload image if exists
     if (image) {
       imageUrl = await uploadImage(image);
     }
 
-    // STEP 2: send campaign data
     const response = await fetch("/api/campaign", {
       method: "POST",
         credentials: "include", 
@@ -95,13 +92,11 @@ const [image, setImage] = useState<File | null>(null);
 
   return (
     <main className="min-h-screen overflow-hidden bg-[#f8fbff]">
-      {/* BG */}
       <div className="absolute left-0 top-0 h-72 w-72 rounded-full bg-customPrimary/10 blur-3xl" />
 
       <div className="absolute right-0 top-20 h-72 w-72 rounded-full bg-blue-200/20 blur-3xl" />
 
       <div className="relative z-10 mx-auto max-w-7xl px-6 py-10 lg:px-16">
-        {/* TOP */}
         <div className="mb-10 flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
           <div>
             <button

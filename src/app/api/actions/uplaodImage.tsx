@@ -1,16 +1,18 @@
-export const uploadImage = async (file: File) => {
+export async function uploadImage(file: File) {
   const formData = new FormData();
 
   formData.append("file", file);
 
-  const res = await fetch("/api/upload", {
+  const response = await fetch("/api/upload", {
     method: "POST",
     body: formData,
   });
 
-  const data = await res.json();
+  const data = await response.json();
 
-  if (!res.ok) throw new Error(data.error);
+  if (!response.ok) {
+    throw new Error(data.error || "Upload failed");
+  }
 
-  return data.url as string;
-};
+  return data.url;
+}
