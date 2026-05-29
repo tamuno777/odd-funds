@@ -28,10 +28,10 @@ const Footer = () => {
               Explore
             </h3>
             <ul className="mt-4 space-y-3 text-sm text-white/70">
-              <li className="hover:text-white transition"><Link href="/HowItWorks">Campaigns</Link></li>
+              <li className="hover:text-white transition"><Link href="/campaigns">Campaigns</Link></li>
               <li className="hover:text-white transition"><Link href="/HowItWorks">How it works</Link></li>
-              <li className="hover:text-white transition"><Link href="/HowItWorks">Start a campaign</Link></li>
-              <li className="hover:text-white transition"><Link href="/HowItWorks">Donate</Link></li>
+              <li className="hover:text-white transition"><Link href="/signup">Start a campaign</Link></li>
+              <li className="hover:text-white transition"><Link href="/signin">Donate</Link></li>
               
             </ul>
           </div>
@@ -42,7 +42,7 @@ const Footer = () => {
             </h3>
             <ul className="mt-4 space-y-3 text-sm text-white/70">
               <li className="hover:text-white transition">Help Center</li>
-              <li className="hover:text-white transition">Contact Us</li>
+              <li className="hover:text-white transition"><Link href="/contact">Contact Us</Link></li>
               <li className="hover:text-white transition">Trust & Safety</li>
               <li className="hover:text-white transition">Terms & Privacy</li>
             </ul>

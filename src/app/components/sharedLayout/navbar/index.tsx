@@ -15,29 +15,32 @@ const mobileLink =
 
 const Nav = () => {
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const { data: session, status }   = useSession();
+  const { data: session, status } = useSession();
 
-  const isLoading  = status === "loading";
+  const isLoading = status === "loading";
   const isLoggedIn = status === "authenticated" && !!session?.user;
-  const user       = session?.user;
+  const user = session?.user;
 
-  const closeDrawer  = () => setDrawerOpen(false);
+  const closeDrawer = () => setDrawerOpen(false);
   const handleSignOut = () => {
     signOut({ callbackUrl: "/" });
     closeDrawer();
   };
 
   const guestLinks = [
-    { href: "/",           label: "Home"        },
-    { href: "/about",      label: "About"       },
-    { href: "/HowItWorks", label: "How it works"},
-    { href: "/contact",    label: "Contact"     },
+    { href: "/", label: "Home" },
+    { href: "/about", label: "About" },
+    { href: "/HowItWorks", label: "How it works" },
+    { href: "/contact", label: "Contact" },
+    { href: "/campaigns", label: "Campaigns" },
   ];
 
   const authLinks = [
-    { href: "/Welcome",   label: "Home"      },
+    { href: "/Welcome", label: "Home" },
     { href: "/dashboard", label: "Dashboard" },
-    { href: "/contact",   label: "Contact"   },
+    { href: "/contact", label: "Contact" },
+    { href: "/campaigns", label: "Campaigns" },
+
   ];
 
   const navLinks = isLoggedIn ? authLinks : guestLinks;
@@ -134,9 +137,8 @@ const Nav = () => {
       )}
 
       <div
-        className={`fixed top-0 right-0 h-full w-[280px] z-50 bg-white border-l border-[#e8edf5] flex flex-col p-6 gap-6 transform transition-transform duration-300 ease-out ${
-          drawerOpen ? "translate-x-0" : "translate-x-full"
-        }`}
+        className={`fixed top-0 right-0 h-full w-[280px] z-50 bg-white border-l border-[#e8edf5] flex flex-col p-6 gap-6 transform transition-transform duration-300 ease-out ${drawerOpen ? "translate-x-0" : "translate-x-full"
+          }`}
       >
         <button
           onClick={closeDrawer}

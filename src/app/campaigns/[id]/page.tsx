@@ -15,8 +15,7 @@ import {
   FiDollarSign,
   FiClock,
 } from "react-icons/fi";
-import DeleteCampaignModal from "@/app/components/modal/DeleteCampaignModal";
-import EditCampaignModal from "@/app/components/modal/EditCampaignModal";
+
 import { Campaign } from "@/app/types/campaign";
 
 
@@ -30,9 +29,7 @@ export default function CampaignDetailsPage() {
   const [campaign, setCampaign] = useState<Campaign | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const [actionLoading, setActionLoading] = useState(false);
-  const [editOpen, setEditOpen] = useState(false);
-  const [deleteOpen, setDeleteOpen] = useState(false);
+  
 
   useEffect(() => {
     const fetchCampaign = async () => {
@@ -57,52 +54,20 @@ export default function CampaignDetailsPage() {
     if (campaignId) fetchCampaign();
   }, [campaignId]);
 
-  const handleShare = async () => {
-    const shareUrl = `${window.location.origin}/campaigns/${campaignId}`;
+// export async function generateMetadata({
+//   params,
+// }) {
+//   const campaign = ...
 
-    try {
-      if (navigator.share) {
-        await navigator.share({
-          title: campaign?.title,
-          text: campaign?.description,
-          url: shareUrl,
-        });
+//   return {
+//     title: campaign.title,
+//     description: campaign.description,
+//     openGraph: {
+//       images: [campaign.image],
+//     },
+//   };
+// }
 
-        return;
-      }
-
-      await navigator.clipboard.writeText(
-        shareUrl
-      );
-
-      alert("Campaign link copied!");
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
-  const handleDelete = async () => {
-    try {
-      setActionLoading(true);
-
-      const res = await fetch(
-        `/api/campaign/${campaignId}`,
-        {
-          method: "DELETE",
-        }
-      );
-
-      if (!res.ok) {
-        throw new Error();
-      }
-
-      router.push("/dashboard/campaign");
-    } catch (err) {
-      alert("Failed to delete campaign");
-    } finally {
-      setActionLoading(false);
-    }
-  };
 
   if (loading) {
     return (
@@ -132,13 +97,7 @@ export default function CampaignDetailsPage() {
       <div className="relative z-10 mx-auto max-w-7xl px-6 py-10 lg:px-16">
         <div className="mb-10 flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
           <div>
-            <button
-              onClick={() => router.push("/dashboard/campaign")}
-              className="mb-5 inline-flex items-center gap-2 text-sm font-medium text-gray-500 transition hover:text-gray-900"
-            >
-              <FiArrowLeft size={16} />
-              Back to campaigns
-            </button>
+            
 
             <span className="inline-flex rounded-full bg-green-100 px-4 py-2 text-sm font-medium text-green-700">
               {campaign.status}
@@ -153,31 +112,14 @@ export default function CampaignDetailsPage() {
             </p>
           </div>
 
-          <div className="flex flex-wrap gap-3">
-            <button
-              onClick={handleShare}
-              className="flex h-12 items-center gap-2 rounded-2xl border px-5 text-sm"
-            >
+          {/* <div className="flex flex-wrap gap-3">
+            <button className="flex h-12 items-center gap-2 rounded-2xl border px-5 text-sm">
               <FiShare2 />
               Share
             </button>
 
-            <button
-              onClick={() => setEditOpen(true)}
-              className="flex h-12 items-center gap-2 rounded-2xl bg-customPrimary px-5 text-sm text-white"
-            >
-              <FiEdit3 />
-              Edit
-            </button>
-
-            <button
-              onClick={() => setDeleteOpen(true)}
-              className="flex h-12 items-center gap-2 rounded-2xl bg-red-50 px-5 text-sm text-red-600"
-            >
-              <FiTrash2 />
-              Delete
-            </button>
-          </div>
+           
+          </div> */}
         </div>
 
         <div className="grid gap-8 lg:grid-cols-[1.2fr_420px]">
@@ -223,6 +165,7 @@ export default function CampaignDetailsPage() {
               </div>
             </div>
 
+            {/* TOTAL */}
             <div className="mt-8 rounded-2xl bg-customPrimary p-6 text-white">
               <p>Total Raised</p>
               <h3 className="text-3xl font-bold">
@@ -234,6 +177,7 @@ export default function CampaignDetailsPage() {
               </p>
             </div>
 
+            {/* METRICS */}
             <div className="mt-6 space-y-4">
               <div className="flex justify-between">
                 <FiUsers /> {campaign.donors || 0}
@@ -254,21 +198,7 @@ export default function CampaignDetailsPage() {
           </motion.div>
         </div>
       </div>
-      <EditCampaignModal
-        open={editOpen}
-        onClose={() => setEditOpen(false)}
-        campaign={campaign}
-        onUpdated={(updatedCampaign) =>
-          setCampaign(updatedCampaign)
-        }
-      />
-
-      <DeleteCampaignModal
-        open={deleteOpen}
-        onClose={() => setDeleteOpen(false)}
-        onDelete={handleDelete}
-        loading={actionLoading}
-      />
+     
     </main>
   );
 }

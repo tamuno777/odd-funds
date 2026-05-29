@@ -16,8 +16,8 @@ import {
 } from "react-icons/fi";
 
 interface Campaign {
-  id: string; 
-  title: string; 
+  id: string;
+  title: string;
   status: string;
   raised: number;
   goal: number;
@@ -27,7 +27,7 @@ interface Campaign {
 
 export default function CampaignsPage() {
   const router = useRouter();
-  
+
   const [campaigns, setCampaigns] = useState<Campaign[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
@@ -37,15 +37,15 @@ export default function CampaignsPage() {
       try {
         setIsLoading(true);
         setErrorMsg(null);
-        
+
         const res = await fetch("/api/campaign");
-        
+
         if (!res.ok) {
           throw new Error(`Failed to load campaigns: ${res.statusText}`);
         }
-        
+
         const data = await res.json();
-        
+
         setCampaigns(Array.isArray(data) ? data : []);
       } catch (err: any) {
         console.error("Error fetching campaigns:", err);
@@ -69,12 +69,10 @@ export default function CampaignsPage() {
 
   return (
     <main className="min-h-screen bg-[#f8fbff] overflow-hidden relative">
-      {/* BG Shadows */}
       <div className="absolute left-0 top-0 h-72 w-72 rounded-full bg-customPrimary/10 blur-3xl" />
       <div className="absolute right-0 top-20 h-72 w-72 rounded-full bg-blue-200/20 blur-3xl" />
 
       <div className="relative z-10 mx-auto max-w-7xl px-6 py-10 lg:px-16">
-        {/* TOP PANEL */}
         <div className="mb-10 flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
           <div>
             <button
@@ -168,7 +166,7 @@ export default function CampaignsPage() {
             </p>
 
             <button
-              onClick={() => router.push("/dashboard/campaigns/new")}
+              onClick={() => router.push("/dashboard/campaign/new")}
               className="mt-8 inline-flex h-14 items-center justify-center gap-2 rounded-2xl bg-customPrimary px-6 text-sm font-semibold text-white transition hover:scale-[1.02]"
             >
               <FiPlus />
@@ -178,7 +176,7 @@ export default function CampaignsPage() {
         ) : (
           <div className="grid gap-6 lg:grid-cols-2">
             {campaigns.map((campaign, index) => {
-              const currentGoal = campaign.goal || 1; 
+              const currentGoal = campaign.goal || 1;
               const currentRaised = campaign.raised || 0;
               const progress = Math.min((currentRaised / currentGoal) * 100, 100);
 
@@ -194,9 +192,9 @@ export default function CampaignsPage() {
                     <div className="flex items-start justify-between">
                       <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-blue-100 overflow-hidden shrink-0">
                         {campaign.image ? (
-                          <img 
-                            src={campaign.image} 
-                            alt={campaign.title} 
+                          <img
+                            src={campaign.image}
+                            alt={campaign.title}
                             className="h-full w-full object-cover"
                           />
                         ) : (
@@ -204,7 +202,7 @@ export default function CampaignsPage() {
                         )}
                       </div>
 
-                      <button 
+                      <button
                         onClick={() => router.push(`/dashboard/campaign/${campaign.id}`)}
                         className="rounded-xl border border-gray-200 px-4 py-2 text-sm font-medium text-gray-700 transition hover:bg-gray-50"
                       >
@@ -213,7 +211,7 @@ export default function CampaignsPage() {
                     </div>
 
                     <h2 className="mt-5 text-2xl font-bold text-gray-900 line-clamp-1">
-                      {campaign.title} {/* Changed from name to title */}
+                      {campaign.title} 
                     </h2>
 
                     <div className="mt-3 inline-flex items-center gap-2 rounded-full bg-green-100 px-3 py-1 text-xs font-semibold text-green-700 capitalize">
@@ -222,7 +220,6 @@ export default function CampaignsPage() {
                     </div>
                   </div>
 
-                  {/* PROGRESS INDICATOR TRACKER */}
                   <div className="mt-8">
                     <div className="mb-3 flex items-center justify-between">
                       <span className="text-sm text-gray-500">Raised</span>
