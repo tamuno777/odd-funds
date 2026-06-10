@@ -1,4 +1,4 @@
-# FundHope 💙
+# ODDFUND 🤝
 
 A crowdfunding platform where anyone can start a campaign, support causes they care about, and track every naira in real time.
 
