@@ -7,6 +7,12 @@ datasource db {
   provider = "postgresql"
 }
 
+enum CampaignStatus {
+  ACTIVE
+  PAUSED
+  COMPLETED
+}
+
 model User {
   id            String    @id @default(cuid())
   name          String?
@@ -18,28 +24,25 @@ model User {
   role          String    @default("user")
   createdAt     DateTime  @default(now())
 
-  accounts      Account[]
-  sessions      Session[]
-
-  campaigns     Campaign[]
-
+  accounts  Account[]
+  sessions  Session[]
+  campaigns Campaign[]
+  donations Donation[]
 }
 
 model Account {
-  id                String @id @default(cuid())
-
+  id                String  @id @default(cuid())
   userId            String
   type              String
   provider          String
   providerAccountId String
-
-  refresh_token String?
-  access_token  String?
-  expires_at    Int?
-  token_type    String?
-  scope         String?
-  id_token      String?
-  session_state String?
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
@@ -48,12 +51,10 @@ model Account {
 
 model Session {
   id           String   @id @default(cuid())
-
   sessionToken String   @unique
   userId       String
   expires      DateTime
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model VerificationToken {
@@ -65,40 +66,49 @@ model VerificationToken {
 }
 
 model Campaign {
-  id          String   @id @default(cuid())
+  id          String         @id @default(cuid())
   title       String
   description String
-
   goal        Int
-  raised      Int      @default(0)
-
+  raised      Int            @default(0)
   image       String?
-
-  status      String   @default("active")
-  isPublic    Boolean  @default(true)
-
+  status      CampaignStatus @default(ACTIVE) // Fixed: Now using your native enum safely
+  isPublic    Boolean        @default(true)
   userId      String
-  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user        User           @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  donations Donation[]
+  updates   CampaignUpdate[]
 
-    donations   Donation[]
-
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Donation {
-  id          String   @id @default(cuid())
-  amount      Int
-  currency    String   @default("NGN")
+  id         String   @id @default(cuid())
+  amount     Int
+  currency   String   @default("NGN")
+  campaignId String
+  campaign   Campaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
 
-  campaignId  String
-  campaign    Campaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+  userId     String?
+  user       User?    @relation(fields: [userId], references: [id], onDelete: SetNull) // Fixed: Added the explicit relation map back to User
+  donorName  String?
+  donorEmail String?
+  message    String?
+  status     String   @default("PENDING")
+  reference  String?  @unique // Fixed: Restored unique parameter needed for .findUnique lookup
 
-  userId      String?
-  donorName   String?
-  donorEmail  String?
-  message     String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
 
-  createdAt   DateTime @default(now())
+model CampaignUpdate {
+  id         String   @id @default(cuid())
+  title      String
+  content    String
+  campaignId String
+  campaign   Campaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
 }

@@ -2,10 +2,12 @@
 
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import { Toaster } from "react-hot-toast";
 import { SessionProvider } from "next-auth/react"; // Import SessionProvider
 import Nav from "./components/sharedLayout/navbar";
 import Footer from "./components/sharedLayout/footer";
 import { Bricolage_Grotesque } from "next/font/google";
+import Script from "next/script";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -47,6 +49,8 @@ export default function RootLayout({
           </div>
 
         </SessionProvider>
+        <Toaster position="top-center" reverseOrder={false} />
+        <Script src="https://js.paystack.co/v2/inline.js" strategy="beforeInteractive" />
       </body>
     </html>
   );
